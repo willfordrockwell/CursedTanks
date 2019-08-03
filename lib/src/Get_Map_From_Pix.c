@@ -1,4 +1,4 @@
-#include "../include/logic.h"
+#include <logic.h>
 
 int Get_Map_From_Pix (short x)
 {

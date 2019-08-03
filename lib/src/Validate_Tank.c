@@ -1,4 +1,4 @@
-#include "../include/logic.h"
+#include <logic.h>
 
 int Validate_Tank (char **map,          //double-ptr to map
                    struct tank *tank    //ptr to tank
@@ -17,16 +17,16 @@ int Validate_Tank (char **map,          //double-ptr to map
     {
     case UP:
         tank->coord.y++;
-        return 0;
+        return 1;
     case DOWN:
         tank->coord.y--;
-        return 0;
+        return 1;
     case RIGHT:
         tank->coord.x--;
-        return 0;
+        return 1;
     case LEFT:
         tank->coord.x++;
-        return 0;
+        return 1;
     default:
         return -1;
     }

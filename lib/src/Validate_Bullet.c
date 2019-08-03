@@ -1,4 +1,4 @@
-#include "../include/logic.h"
+#include <logic.h>
 
 int Validate_Bullet (char **map,            //double-ptr to map
                      struct bullet *bullet, //ptr to bullet
