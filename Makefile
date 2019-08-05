@@ -1,14 +1,14 @@
 PHONY_N = base clean create obj_lib create_in_lib
-LIBRARIES = Get_Map_From_Pix.o Validate_Bullet.o Validate_Tank.o
+LIBRARIES = map.o
 .PHONY: $(PHONY_N)
 
 all: base
 
-base: main.o
-	g++ obj/main.o -o bin/CursedTanks -g -lsfml-graphics -lsfml-window -lsfml-system -L./lib -l cursedtanks
+base: create Cursed_Tanks.o
+	g++ obj/Cursed_Tanks.o -o bin/CursedTanks -g -lsfml-graphics -lsfml-window -lsfml-system -L./lib -l cursedtanks
 
-main.o: sources/main.cpp
-	gcc sources/main.cpp -o obj/main.o -c -I include
+Cursed_Tanks.o: sources/Cursed_Tanks.cpp
+	gcc sources/Cursed_Tanks.cpp -o obj/Cursed_Tanks.o -c -I include
 
 assem_lib: obj_lib
 	ar -rc lib/libcursedtanks.a $(LIBRARIES)
@@ -16,6 +16,7 @@ assem_lib: obj_lib
 
 obj_lib:
 	gcc lib/src/*.c -c -I include
+	g++ lib/src/*.cpp -c -I include
 
 create: clean
 	mkdir obj

@@ -1,43 +1,120 @@
 #ifndef _CURSED_TANKS_
 #define _CURSED_TANKS_
 
-#define SIZE_TILE 4
+#include "IO.h"
+#include "logic.h"
+#include <SFML/Graphics.hpp>
 
-#define EMPTY   0
-#define ROCK    1
-#define TREE    2
-#define METAL   3
-#define WATER   4
-#define ICE     5
-#define BASE    6
+class object_c {
 
-#define MAP_SIDE 80
-
-enum direct { UP, RIGHT, DOWN, LEFT };
-
-struct coord {
-    short x;
-    short y;
+	public:
+		sf::Texture texture;
+		sf::Sprite sprite;
+		object_c()
+		{
+		}
+		virtual void update()
+		{
+		}
 };
 
-struct tank {
-    struct coord coord;
-    enum direct direct;
-    short health;
+class tank_c : public object_c {
+	private:
+		tank_s tank_;
+	public:
+		tank_c(sf::String file,
+		     int x,
+		     int y,
+		     sf::Color color)
+		{
+			tank_.coord.x = x;
+			tank_.coord.y = y;
+			texture.loadFromFile(file);
+			sprite.setTexture(texture);
+			sprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
+			sprite.setPosition(x, y);
+			sprite.setColor(color);
+		}
+		void update()
+		{
+			sprite.setPosition(Get_X(), Get_Y());
+		}
+		int Get_X()
+		{
+			return tank_.coord.x;
+		}
+		int Get_Y()
+		{
+			return tank_.coord.y;
+		}
+		enum direct_e Get_Dir()
+		{
+			return tank_.direct;
+		}
+		void Set_X(int x)
+		{
+			tank_.coord.x = x;
+			update();
+		}
+		void Set_Y(int y)
+		{
+			tank_.coord.y = y;
+			update();
+		}
+		void Set_Dir(enum direct_e direct)
+		{
+			tank_.direct = direct;
+			update();
+		}
 };
 
-struct bullet {
-    struct coord coord;
-    enum direct direct;
+class bullet_c : public object_c {
+	private:
+		bullet_s bullet_;
+	public:
+		bullet_c(sf::String file,
+		     int x,
+		     int y,
+		     sf::Color color)
+		{
+			bullet_.coord.x = x;
+			bullet_.coord.y = y;
+			texture.loadFromFile(file);
+			sprite.setTexture(texture);
+			sprite.setTextureRect(sf::IntRect(0, 0, 6, 6));
+			sprite.setPosition(x, y);
+			sprite.setColor(color);
+		}
+		void update()
+		{
+			sprite.setPosition(Get_X(), Get_Y());
+		}
+		int Get_X()
+		{
+			return bullet_.coord.x;
+		}
+		int Get_Y()
+		{
+			return bullet_.coord.y;
+		}
+		enum direct_e Get_Dir()
+		{
+			return bullet_.direct;
+		}
+		void Set_X(int x)
+		{
+			bullet_.coord.x = x;
+			update();
+		}
+		void Set_Y(int y)
+		{
+			bullet_.coord.y = y;
+			update();
+		}
+		void Set_Dir(enum direct_e direct)
+		{
+			bullet_.direct = direct;
+			update();
+		}
 };
-
-int Get_Map_From_Pix (short x);
-
-int Validate_Tank (char **map,          //double-ptr to map
-                   struct tank *tank);  //ptr to tank
-
-int Validate_Bullet (char **map,            //double-ptr to map
-                     struct bullet *bullet, //ptr to bullet
-                     struct tank *tanks);   //all tanks
-
 #endif //_CURSED_TANKS_

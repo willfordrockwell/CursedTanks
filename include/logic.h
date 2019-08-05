@@ -4,7 +4,7 @@
 #include "IO.h"
 
 #define EMPTY   0
-#define ROCK    1
+#define BRICK    1
 #define TREE    2
 #define METAL   3
 #define WATER   4
@@ -13,22 +13,22 @@
 
 #define MAP_SIDE 80
 
-enum direct { UP, RIGHT, DOWN, LEFT };
+enum direct_e { UP, RIGHT, DOWN, LEFT };
 
-struct coord {
+struct coord_s {
     short x;
     short y;
 };
 
-struct tank {
-    struct coord coord;
-    enum direct direct;
+struct tank_s {
+    struct coord_s coord;
+    enum direct_e direct;
     short health;
 };
 
-struct bullet {
-    struct coord coord;
-    enum direct direct;
+struct bullet_s {
+    struct coord_s coord;
+    enum direct_e direct;
 };
 
 int Get_Map_From_Pix (short x);
