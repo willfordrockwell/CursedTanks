@@ -1,18 +1,19 @@
-#include <../include/logic.h>
+#include <logic.h>
+#define SMALL_SQUARE SMALL_SQUARE
 
 int Validate_Bullet(char **map,            //double-ptr to map
-        struct bullet *bullet, //ptr to bullet
-        struct tank *tanks)    //all tanks
-        {
+                    struct bullet *bullet, //ptr to bullet
+                    struct tank *tanks)    //all tanks
+{
     int x_bullet = Get_Map_From_Pix(bullet->coord.x);
     int y_bullet = Get_Map_From_Pix(bullet->coord.y);
 
     switch (bullet->direct) //check tanks;
     {
     case UP:
-        for (int i = 0; i < 4; i++)
-            if (x_bullet == Get_Map_From_Pix(tanks->coord.x + 4 * i)
-                    && y_bullet == Get_Map_From_Pix(tanks->coord.y + 12)) {
+        for (int i = 0; i < SMALL_SQUARE; i++)
+            if (x_bullet == Get_Map_From_Pix(tanks->coord.x + SMALL_SQUARE * i)
+                && y_bullet == Get_Map_From_Pix(tanks->coord.y + SMALL_SQUARE*3)) {
                 bullet->coord.x = -16;
                 bullet->coord.y = -16;
                 tanks->health--;
@@ -20,9 +21,9 @@ int Validate_Bullet(char **map,            //double-ptr to map
             }
         break;
     case RIGHT:
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < SMALL_SQUARE; i++)
             if (x_bullet == Get_Map_From_Pix(tanks->coord.x)
-                    && y_bullet == Get_Map_From_Pix(tanks->coord.y + 4 * i)) {
+                && y_bullet == Get_Map_From_Pix(tanks->coord.y + SMALL_SQUARE * i)) {
                 bullet->coord.x = -16;
                 bullet->coord.y = -16;
                 tanks->health--;
@@ -30,9 +31,9 @@ int Validate_Bullet(char **map,            //double-ptr to map
             }
         break;
     case LEFT:
-        for (int i = 0; i < 4; i++)
-            if (x_bullet == Get_Map_From_Pix(tanks->coord.x + 12)
-                    && y_bullet == Get_Map_From_Pix(tanks->coord.y + 4 * i)) {
+        for (int i = 0; i < SMALL_SQUARE; i++)
+            if (x_bullet == Get_Map_From_Pix(tanks->coord.x + SMALL_SQUARE*3)
+                && y_bullet == Get_Map_From_Pix(tanks->coord.y + SMALL_SQUARE * i)) {
                 bullet->coord.x = -16;
                 bullet->coord.y = -16;
                 tanks->health--;
@@ -40,9 +41,9 @@ int Validate_Bullet(char **map,            //double-ptr to map
             }
         break;
     case DOWN:
-        for (int i = 0; i < 4; i++)
-            if (x_bullet == Get_Map_From_Pix(tanks->coord.x + 4 * i)
-                    && y_bullet == Get_Map_From_Pix(tanks->coord.y)) {
+        for (int i = 0; i < SMALL_SQUARE; i++)
+            if (x_bullet == Get_Map_From_Pix(tanks->coord.x + SMALL_SQUARE * i)
+                && y_bullet == Get_Map_From_Pix(tanks->coord.y)) {
                 bullet->coord.x = -16;
                 bullet->coord.y = -16;
                 tanks->health--;
