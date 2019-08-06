@@ -1,0 +1,18 @@
+dist: trusty
+sudo: required
+language: cpp
+os:
+  - linux
+install: sudo apt-get -y install libsfml-dev
+compiler:
+  - gcc
+script:
+  - make create
+  - make assem_lib
+  - make
+notifications:
+  email:
+    recipients:
+      - willfordworks@gmail.com
+    on_success: never
+    on_failure: always
