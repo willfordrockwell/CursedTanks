@@ -22,7 +22,7 @@ assem_lib: obj_lib
 	rm *.o
 
 obj_lib:
-	gcc lib/src/*.c -c -I include
+	gcc lib/src/*.c -c -std=c99 -I include
 
 create: clean
 	mkdir obj
