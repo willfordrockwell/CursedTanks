@@ -1,19 +1,11 @@
 #ifndef _CT_MAP_
 #define _CT_MAP_
-#define SIZE_MICRO_TILE 4
-#define SIZE_MICRO_MAP_X 88
-#define SIZE_MICRO_MAP_Y 88
-#define SIZE_MACRO_TILE 16
-#define SIZE_MACRO_MAP_X 20
-#define SIZE_MACRO_MAP_Y 20
 
 #include <SFML/Graphics.hpp>
 #include "logic.h"
-
 //! 0 - empty, 1 - 5 - bricks, 6 - tree, 7-B - metal, C - water, D - ice, E - base ?
 //! for ranged figure: +0 - full, +1 - up, +2 - down, +3 - left, +4 - rigth ?
-
-sf::String macro_tile[SIZE_MACRO_MAP_X] = {
+sf::String macro_tile[SIZE_MACRO_MAP_Y] = {
 "E10000066CC60000001E",
 "110000016CC670000011",
 "00000001611670000000",
@@ -36,9 +28,6 @@ sf::String macro_tile[SIZE_MACRO_MAP_X] = {
 "E10000006CC66000001E"
 };
 
-sf::String micro_tile[SIZE_MICRO_MAP_X];
-
-int Macro_To_Micro(sf::String *macro,
-		   sf::String *micro);
+sf::String micro_tile[SIZE_MICRO_MAP_Y]={"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"};
 
 #endif

@@ -1,4 +1,4 @@
-PHONY_N = base clean create obj_lib create_in_lib
+\PHONY_N = base clean create obj_lib create_in_lib
 LIBRARIES = map.o
 .PHONY: $(PHONY_N)
 
@@ -17,6 +17,9 @@ assem_lib: obj_lib
 obj_lib:
 	gcc lib/src/*.c -c -I include
 	g++ lib/src/*.cpp -c -I include
+
+clean_lib:
+	rm lib/*.a
 
 create: clean
 	mkdir obj
