@@ -3,7 +3,7 @@ sudo: required
 language: cpp
 os:
   - linux
-install: sudo apt -y install libsfml-dev
+install: sudo apt-get -y install libsfml-dev
 compiler:
   - gcc
 script:
