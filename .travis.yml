@@ -7,6 +7,7 @@ install: sudo apt-get -y install libsfml-dev
 compiler:
   - gcc
 script:
+  - make create
   - make assem_lib
   - make
 notifications:
