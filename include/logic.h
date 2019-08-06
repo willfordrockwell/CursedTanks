@@ -4,21 +4,22 @@
 #include "IO.h"
 
 #define EMPTY   '0'
-#define BRICK    '1'
+#define BRICK   '1'
 #define TREE    '2'
 #define METAL   '3'
 #define WATER   '4'
 #define ICE     '5'
 #define BASE    '6'
+#define NONE    '7'
 
 #define MAP_SIDE 80
 
-#define SIZE_MICRO_TILE 4
-#define SIZE_MICRO_MAP_X 88
-#define SIZE_MICRO_MAP_Y 88
-#define SIZE_MACRO_TILE 16
-#define SIZE_MACRO_MAP_X 20
-#define SIZE_MACRO_MAP_Y 20
+#define SIZE_MICRO_TILE 	4
+#define SIZE_MICRO_MAP_X 	88
+#define SIZE_MICRO_MAP_Y 	88
+#define SIZE_MACRO_TILE 	16
+#define SIZE_MACRO_MAP_X 	20
+#define SIZE_MACRO_MAP_Y 	20
 
 
 enum direct_e { UP, LEFT, DOWN, RIGHT };

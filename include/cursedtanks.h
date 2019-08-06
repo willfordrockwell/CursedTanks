@@ -22,26 +22,27 @@ class object_c {
 class tank_c : public object_c {
 	private:
 		tank_s tank_;
+		int place;
 	public:
 		tank_c(sf::String file,
-		     int x,
-		     int y,
-		     sf::Color color,
-		     enum direct_e dir)
+	   	       int x,
+		       int y,
+		       short color,
+		       enum direct_e dir)
 		{
 			tank_.coord.x = x;
 			tank_.coord.y = y;
 			tank_.direct = dir;
 			texture.loadFromFile(file);
 			sprite.setTexture(texture);
-			sprite.setTextureRect(sf::IntRect(dir*32, 0, 16, 16));
+			place = color;
+			sprite.setTextureRect(sf::IntRect((color/2)*128+dir*32, (color%2)*128, 16, 16));
 			sprite.setPosition(x, y);
-			sprite.setColor(color);
 		}
 		void update()
 		{
 			sprite.setPosition(Get_X(), Get_Y());
-			sprite.setTextureRect(sf::IntRect(tank_.direct*32, 0, 16, 16));
+			sprite.setTextureRect(sf::IntRect(place/2*128+tank_.direct*32, (place%2)*128, 16, 16));
 		}
 		int Get_X()
 		{
@@ -70,6 +71,22 @@ class tank_c : public object_c {
 			tank_.direct = direct;
 			update();
 		}
+		struct coord_s Get_Coord()
+		{
+			return tank_.coord;
+		}
+		void Set_Coord(struct coord_s coord_)
+		{
+			tank_.coord.x = coord_.x;
+			tank_.coord.y = coord_.y;
+		}
+		struct coord_s Get_Map_Position()
+		{
+			struct coord_s coord_;
+			coord_.x = tank_.coord.x/SIZE_TILE;
+			coord_.y = tank_.coord.y/SIZE_TILE;
+			return coord_;
+		}
 };
 
 class bullet_c : public object_c {
@@ -79,7 +96,6 @@ class bullet_c : public object_c {
 		bullet_c(sf::String file,
 		     int x,
 		     int y,
-		     sf::Color color,
 		     enum direct_e dir)
 		{
 			bullet_.coord.x = x;
@@ -87,14 +103,13 @@ class bullet_c : public object_c {
 			bullet_.direct = dir;
 			texture.loadFromFile(file);
 			sprite.setTexture(texture);
-			sprite.setTextureRect(sf::IntRect(dir*8, 0, 8, 8));
-			sprite.setPosition(x, y);
-			sprite.setColor(color);
+			sprite.setTextureRect(sf::IntRect(dir*8+320, 100, 8, 8));
+			sprite.setPosition(x, y + 4);
 		}
 		void update()
 		{
 			sprite.setPosition(Get_X(), Get_Y());
-			sprite.setTextureRect(sf::IntRect(bullet_.direct*8, 0, 8, 8));
+			sprite.setTextureRect(sf::IntRect(bullet_.direct*8+320, 100, 8, 8));
 
 		}
 		int Get_X()
@@ -103,7 +118,7 @@ class bullet_c : public object_c {
 		}
 		int Get_Y()
 		{
-			return bullet_.coord.y;
+			return bullet_.coord.y - 4;
 		}
 		enum direct_e Get_Dir()
 		{
@@ -111,12 +126,12 @@ class bullet_c : public object_c {
 		}
 		void Set_X(int x)
 		{
-			bullet_.coord.x = x;
+			bullet_.coord.x = x + 4;
 			update();
 		}
 		void Set_Y(int y)
 		{
-			bullet_.coord.y = y;
+			bullet_.coord.y = y + 4;
 			update();
 		}
 		void Set_Dir(enum direct_e direct)
@@ -124,6 +139,23 @@ class bullet_c : public object_c {
 			bullet_.direct = direct;
 			update();
 		}
+		struct coord_s Get_Coord()
+                {
+                        return bullet_.coord;
+                }
+                void Set_Coord(struct coord_s coord_)
+                {
+                        bullet_.coord.x = coord_.x;
+                        bullet_.coord.y = coord_.y;
+                }
+                struct coord_s Get_Map_Position()
+                {
+                        struct coord_s coord_;
+                        coord_.x = bullet_.coord.x/SIZE_TILE;
+                        coord_.y = bullet_.coord.y/SIZE_TILE;
+                        return coord_;
+                }
+
 };
 
 #endif //__CURSED_TANKS_H__
