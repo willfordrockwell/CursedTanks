@@ -14,6 +14,15 @@
 #define NO_FLAGS 0
 #define NUM_CLIENTS 4
 
+#define PORT_LENGTH 6
+#define IP_LENGTH 17
+
+void Get_IP(char *Auto_IP,                  //auto IP
+            char *Server_IP);               //returned IP-str
+
+void Get_Port(char *Auto_Port,              //auto Port
+            char *Server_Port);             //returned Port-str
+
 int Init_Server(int *sock,                  //ptr to socket
                 struct sockaddr_in *addr_s, //ptr to addr_s
                 socklen_t *size_s);         //ptr to server addr size
