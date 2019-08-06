@@ -1,5 +1,5 @@
 #include <logic.h>
-#define SMALL_SQUARE SMALL_SQUARE
+#define SMALL_SQUARE 4
 
 int Validate_Bullet(char **map,            //double-ptr to map
                     struct bullet *bullet, //ptr to bullet
