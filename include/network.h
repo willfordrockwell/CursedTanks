@@ -1,38 +1,43 @@
 #ifndef __NETWORK_H__
 #define __NETWORK_H__
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include<sys/types.h>
-#include<string.h>
 #include <netinet/udp.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
 #include <malloc.h>
+#include <string.h>
 
-int Connect_server(int client_fd, struct sockaddr_in server, int size);
+#include <logic.h>
 
-void Send_to_server(int server_fd, struct sockaddr_in server, //data for connect
-		char **map,            //double-ptr to map
-        struct bullet bullet, //ptr to bullet
-        struct tank tanks));
+#define NO_FLAGS 0
+#define NUM_CLIENTS 4
 
+int Init_Server(int *sock,                  //ptr to socket
+                struct sockaddr_in *addr_s, //ptr to addr_s
+                socklen_t *size_s);         //ptr to server addr size
 
-void Get_from_server(int server_fd, struct sockaddr_in server, int size, //data for connect
-		char **map,            //double-ptr to map
-		struct bullet bullet, //ptr to bullet
-		struct tank tanks));
+int Connect_To_Server(int *sock,              //ptr to socket
+                     struct sockaddr_in *addr,//filled struct
+                     socklen_t *size);        //counted size
 
-int Connect_client(int *client_fd, struct sockaddr_in *client, int *size);
+int Connect_To_Client(int sock,                //socket
+                     struct sockaddr_in *addr,//filled struct
+                     socklen_t *size);        //counted size
 
+void Send(int sock,                         //socket
+          struct sockaddr_in *addr,         //data for connect
+          socklen_t *size,                  //counted size
+          char **map,                       //double-ptr to map
+          struct bullet *bullets,           //ptr to bullets
+          struct tank *tanks);              //ptr to tanks
 
-void Send_to_client(int client_fd, struct sockaddr_in client, //data for connect
-		char **map,            //double-ptr to map
-		struct bullet bullet, //ptr to bullet
-		struct tank tanks));
+void Recv(int sock,                         //socket
+          struct sockaddr_in *addr,         //data for connect
+          socklen_t *size,                  //counted size
+          char **map,                       //double-ptr to map
+          struct bullet *bullets,           //ptr to bullets
+          struct tank *tanks);              //ptr to tanks
 
-void Get_from_client(int client_fd, struct sockaddr_in client, int size, //data for connect
-		char **map,            //double-ptr to map
-		struct bullet bullet, //ptr to bullet
-		struct tank tanks));
-
-#endif __NETWORK_H__
+#endif // !__NETWORK_H__

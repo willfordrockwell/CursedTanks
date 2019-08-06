@@ -4,7 +4,7 @@
 #include "IO.h"
 
 #define EMPTY   0
-#define ROCK    1
+#define BRICK   1
 #define TREE    2
 #define METAL   3
 #define WATER   4
