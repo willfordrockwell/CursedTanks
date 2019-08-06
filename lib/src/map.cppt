@@ -1,0 +1,113 @@
+#include <SFML/Graphics.hpp>
+#include <cursedtanks.h>
+#include <map.h>
+#include <iostream>
+//! 0 - empty, 1 - 5 - bricks, 6 - tree, 7-B - metal, C - water, D - ice, E - base ?
+//! for ranged figure: +0 - full, +1 - up, +2 - down, +3 - left, +4 - rigth ?
+
+
+sf::String macro_tile[SIZE_MACRO_MAP_Y] = {
+"E10000066CC60000001E",
+"110000016CC670000011",
+"00000001611670000000",
+"00000001611670000000",
+"000000016CC670000000",
+"000000066CC600000000",
+"00000006677600000000",
+"07777006677666611116",
+"66666666677666666666",
+"CC11CC77777777CC11CC",
+"CC11CC77777777CC11CC",
+"66666666677666666666",
+"61111666677660077770",
+"00000000677660000000",
+"000000006CC660000000",
+"000000076CC610000000",
+"00000007611610000000",
+"00000007611610000000",
+"110000076CC610000011",
+"E10000006CC66000001E"
+};
+
+//sf::String micro_tile[SIZE_MICRO_MAP_Y]={"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"};
+char micro_tile[SIZE_MICRO_MAP_Y][SIZE_MICRO_MAP_Y];
+
+int Macro_To_Micro(sf::String *macro,
+                   char **micro)
+{
+        int x, y;
+    /*    for (int i = 0; i < SIZE_MICRO_MAP_Y; i++){
+                for(int j = 0; j < 4; j++){
+                        micro[i][j] = METAL;
+                        micro[i][SIZE_MICRO_MAP_X-1-j] = METAL;
+                }
+        }*/
+//	micro [SIZE_MICRO_MAP_Y-1-0][5] = METAL;
+//	micro [0][5] = METAL;
+//std::cout << micro_tile[0];
+//	micro[SIZE_MICRO_MAP_Y-1][SIZE_MICRO_MAP_X-1] =
+        for (int i = 0; i < SIZE_MICRO_MAP_X; i++){
+                for(int j = 0; j < 2; j++){
+			micro[j][i] = METAL;
+                       	micro[SIZE_MICRO_MAP_Y-(1)-j][i] = METAL;
+//                	std::cout << micro [j];
+		}
+        }
+
+   /*     for (int i = 4; i < SIZE_MICRO_MAP_Y-4; i++)
+                for(int j = 0; j < SIZE_MICRO_MAP_X-4; j++){
+                        x = j/4 - 1;
+                        y = i/4 - 1;
+                        switch(macro[y][x]){
+                                case '0':
+                                        micro[i][j] = EMPTY;
+                                        break;
+                                case '1':
+                                        micro[i][j] = BRICK;
+                                        break;
+                                case '2':
+                                        if ((i % 4) < 1) micro[i][j] = BRICK;
+                                        break;
+                                case '3':
+                                        if ((i % 4) > 1) micro[i][j] = BRICK;
+                                        break;
+                                case '4':
+                                        if ((j % 4) < 1) micro[i][j] = BRICK;
+                                        break;
+                                case '5':
+                                        if ((j % 4) > 1) micro[i][j] = BRICK;
+                                        break;
+                                case '6':
+                                        micro[i][j] = TREE;
+                                        break;
+                                case '7':
+                                        micro[i][j] = METAL;
+                                        break;
+                                case '8':
+                                        if ((i % 4) < 1) micro[i][j] = METAL;
+                                        break;
+                                case '9':
+                                        if ((i % 4) > 1) micro[i][j] = METAL;
+                                        break;
+                                case 'A':
+                                        if ((j % 4) < 1) micro[i][j] = METAL;
+                                        break;
+                                case 'B':
+                                        if ((j % 4) > 1) micro[i][j] = METAL;
+                                        break;
+                                case 'C':
+                                        micro[i][j] = WATER;
+                                        break;
+                                case 'D':
+                                        micro[i][j] = ICE;
+                                case 'E':
+                                        micro[i][j] = BASE;
+                                        break;
+                                default:
+                                        return -1;
+                                        break;
+                        }
+                }*/
+        return 0;
+}
+
