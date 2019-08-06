@@ -1,25 +1,17 @@
 dist: trusty
-sudo: require
+sudo: required
 language: cpp
 os:
   - linux
 install: sudo apt -y install libsfml-dev
 compiler:
   - gcc
-addons:
-  apt:
-    - sources ubuntu-toolchain-r-test
-  packages:
-    - gcc-7.4
-    - g++-7.4
+script:
+  - make assem_lib
+  - make
 notifications:
   email:
     recipients:
       - willfordworks@gmail.com
     on_success: never
     on_failure: always
-script:
-  - sudo ln -s /usr/bin/gcc-7.4 /usr/local/bin/gcc
-  - sudo ln -s /usr/bin/g++-7.4 /usr/local/bin/g++
-  - make assem_lib
-  - make
