@@ -95,7 +95,7 @@ int main()
     tank_c tank("textures/texture_map.png", 20 * 16, 17 * 16, 3, LEFT);
     bullet_c bullet("textures/texture_map.png", 19 * 16, 17 * 16, LEFT);
     if (Macro_To_Micro(macro_tile, micro_tile))
-        std::cout <<"Macro_map can't be read";
+        std::cout << "Macro_map can't be read";
 // Game cycle
     while (window.isOpen()) {
         //fo
