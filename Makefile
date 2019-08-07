@@ -24,7 +24,7 @@ assem_lib: obj_lib
 	rm *.o
 
 obj_lib:
-	gcc lib/src/*.c -g -c -I include
+	gcc lib/src/*.c -g -c -std=c99 -I include
 	g++ lib/src/*.cpp -g -c -I include
 
 clean_lib:
