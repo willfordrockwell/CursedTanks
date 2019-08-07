@@ -1,41 +1,51 @@
-PHONY_N = base clean create obj_lib create_in_lib
+CC = gcc
+CPPC = g++
 
-LIBRARIES = Get_Map_From_Pix.o
-LIBRARIES += Validate_Bullet.o
-LIBRARIES += Validate_Tank.o
-LIBRARIES += Init_Server.o
-LIBRARIES += Connect_To_Client.o
-LIBRARIES += Connect_To_Server.o
-LIBRARIES += Get_IP.o
-LIBRARIES += Get_Port.o
-LIBRARIES += Send.o
-LIBRARIES += Recv.o
-LIBRARIES += map.o
+CPPCFLAGS = -g
+CPPCFLAGS += -c
+CPPCFLAGS += -I include
+CPPCFLAGS += -pipe
+
+CCFLAGS = $(CPPCFLAGS)
+CCFLAGS += -std=c99
+
+PHONY_N = base clean create obj_lib create_in_lib objects
+
+#.c sources Cursed_Tanks
+LIBRARY_C_S := $(wildcard lib/src/*.c)
+
+#.cpp sources Cursed_Tanks
+LIBRARY_CPP_S := $(wildcard lib/src/*.cpp)
+
+SFML_LIBRARIES = sfml-graphics
+SFML_LIBRARIES += sfml-window
+SFML_LIBRARIES += sfml-system
+SFML_LIBRARIES := $(addprefix -l, $(SFML_LIBRARIES))
 
 .PHONY: $(PHONY_N)
 
 all: base
 
-base: create Cursed_Tanks.o
-	g++ obj/Cursed_Tanks.o -o bin/CursedTanks -g -lsfml-graphics -lsfml-window -lsfml-system -L./lib -l cursedtanks
+base: Cursed_Tanks.o
+	$(CPPC) obj/Cursed_Tanks.o -o bin/CursedTanks -g $(SFML_LIBRARIES) -L./lib -lcursedtanks
 
 Cursed_Tanks.o: sources/Cursed_Tanks.cpp
-	gcc sources/Cursed_Tanks.cpp -o obj/Cursed_Tanks.o -g -c -I include
+	$(CC) sources/Cursed_Tanks.cpp -o obj/Cursed_Tanks.o $(CPPCFLAGS)
 
-assem_lib: obj_lib
-	ar -rc lib/libcursedtanks.a $(LIBRARIES)
-	rm *.o
+assem_lib: objects
+	ar -rc lib/libcursedtanks.a $(wildcard *.o)
 
-obj_lib:
-	gcc lib/src/*.c -g -c -std=c99 -I include
-	g++ lib/src/*.cpp -g -c -I include
+objects:
+	$(CC) $(LIBRARY_C_S) $(CCFLAGS)
+	$(CPPC) $(LIBRARY_CPP_S) $(CPPCFLAGS)
 
 clean_lib:
 	rm lib/*.a
 
-create: clean
-	mkdir obj
-	mkdir bin
+create:
+	mkdir -p obj
+	mkdir -p bin
 clean:
 	rm -rdf bin
 	rm -rdf obj
+	rm *.o
