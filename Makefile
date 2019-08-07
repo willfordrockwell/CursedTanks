@@ -47,9 +47,7 @@ clean_lib:
 	rm lib/*.a
 
 create:
-	mkdir -p obj
-	mkdir -p bin
+	mkdir -p obj bin
+
 clean:
-	rm -rdf bin
-	rm -rdf obj
-	rm *.o
+	rm -rdf bin obj *.o
