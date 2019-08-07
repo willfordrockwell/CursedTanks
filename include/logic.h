@@ -1,7 +1,7 @@
 #ifndef __LOGIC_H__
 #define __LOGIC_H__
 
-#include "IO.h"
+#include <IO.h>
 
 #define EMPTY   '0'
 #define BRICK   '1'
@@ -13,6 +13,8 @@
 #define NONE    '7'
 
 #define MAP_SIDE 80
+
+#define SMALL_SQUARE 4
 
 #define SIZE_MICRO_TILE 	4
 #define SIZE_MICRO_MAP_X 	88
@@ -42,10 +44,10 @@ struct bullet_s {
 
 int Get_Map_From_Pix (short x);
 
-int Validate_Tank (char **map,          //double-ptr to map
-                   struct tank_s *tank);  //ptr to tank
+int Validate_Tank (char **map,                  //double-ptr to map
+                   struct tank_s *tank);        //ptr to tank
 
-int Validate_Bullet (char **map,            //double-ptr to map
-                     struct bullet_s *bullet, //ptr to bullet
-                     struct tank_s *tanks);   //all tanks
+int Validate_Bullet (char **map,                //double-ptr to map
+                     struct bullet_s *bullet,   //ptr to bullet
+                     struct tank_s *tanks);     //all tanks
 #endif // !__LOGIC_H__
