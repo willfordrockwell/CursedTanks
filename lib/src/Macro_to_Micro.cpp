@@ -3,6 +3,10 @@
 #include <map_func.h>
 #include <iostream>
 
+//! 0 - empty, 1 - 5 - bricks, 6 - tree, 7-B - metal, C - water, D - ice, E - base ?
+//! for ranged figure: +0 - full, +1 - up, +2 - down, +3 - left, +4 - rigth ?
+
+
 int Macro_To_Micro(sf::String * macro,
                    sf::String * micro)
 {
