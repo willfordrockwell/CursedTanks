@@ -6,8 +6,11 @@ LIBRARIES += Validate_Tank.o
 LIBRARIES += Init_Server.o
 LIBRARIES += Connect_To_Client.o
 LIBRARIES += Connect_To_Server.o
+LIBRARIES += Get_IP.o
+LIBRARIES += Get_Port.o
 LIBRARIES += Send.o
 LIBRARIES += Recv.o
+LIBRARIES += map.o
 
 .PHONY: $(PHONY_N)
 

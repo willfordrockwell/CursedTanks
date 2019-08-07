@@ -1,11 +1,11 @@
 #include <network.h>
 
-void Get_Port(char *Auto_Port,
-              char *Server_Port)
+void Get_Port(char *auto_port,
+              char *server_port)
 {
-    printf("Enter server port (auto: %s): ", Auto_Port);
-    fgets(Server_Port, PORT_LENGTH, stdin);
-    if (strncmp(Server_Port, "", 1)) {
-        strcpy(Server_Port, Auto_Port);
+    printf("Enter server port (auto: %s): ", auto_port);
+    fgets(server_port, PORT_LENGTH, stdin);
+    if (strncmp(server_port, "", 1)) {
+        strcpy(server_port, auto_port);
     }
 }

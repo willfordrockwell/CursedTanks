@@ -4,12 +4,12 @@ void Recv(int socket,                       //socket
           struct sockaddr_in *addr,         //data for connect
           socklen_t *size,                  //data for connect
           char **map,                       //double-ptr to map
-          struct bullet *bullets,           //ptr to bullets
-          struct tank *tanks)               //ptr to tanks
+          struct bullet_s *bullets,           //ptr to bullets
+          struct tank_s *tanks)               //ptr to tanks
 {
     int size_map = sizeof(char) * MAP_SIDE * MAP_SIDE;
-    int size_bullets = sizeof(struct bullet) * NUM_CLIENTS;
-    int size_tanks = sizeof(struct tank) * NUM_CLIENTS;
+    int size_bullets = sizeof(struct bullet_s) * NUM_CLIENTS;
+    int size_tanks = sizeof(struct tank_s) * NUM_CLIENTS;
     int size_buff = size_map + size_bullets + size_tanks;
   
     char buff[size_buff];

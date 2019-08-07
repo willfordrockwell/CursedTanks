@@ -1,8 +1,7 @@
 #include <logic.h>
 
-int Validate_Tank (char **map,          //double-ptr to map
-                   struct tank_s *tank    //ptr to tank
-)
+int Validate_Tank (char **map,              //double-ptr to map
+                   struct tank_s *tank)     //ptr to tank
 {
     int x = Get_Map_From_Pix(tank->coord.x);
     int y = Get_Map_From_Pix(tank->coord.y);
