@@ -33,7 +33,7 @@ Cursed_Tanks.o: sources/Cursed_Tanks.cpp
 	$(CC) sources/Cursed_Tanks.cpp -o obj/Cursed_Tanks.o $(CPPCFLAGS)
 
 assem_lib: objects
-	ar -rc lib/libcursedtanks.a $(wildcard *.o)
+	ar -rc lib/libcursedtanks.a $(wildcard ./*.o)
 
 objects:
 	$(CC) $(LIBRARY_C_S) $(CCFLAGS)
