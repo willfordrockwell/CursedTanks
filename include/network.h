@@ -6,8 +6,11 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <sys/types.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <errno.h>
+#include <stdio.h>
 
 #include <logic.h>
 

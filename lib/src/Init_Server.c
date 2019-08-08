@@ -9,9 +9,16 @@ int Init_Server(int *sock,                  //ptr to socket
         return -1;
     }
 
-    if (bind(*sock, (struct sockaddr *)addr_s, *size_s) == -1) {
-        perror("bind server socket");
-        return -1;
+    while (bind(*sock, (struct sockaddr *)addr_s, *size_s) == -1) {
+        switch (errno)
+        {
+        case EACCES:
+            addr_s->sin_port = htons(htons(addr_s->sin_port) + 1);
+            break;
+        
+        default:
+            return -1;
+        }
     }
 
     return 0;
