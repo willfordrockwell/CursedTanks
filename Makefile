@@ -38,6 +38,7 @@ Cursed_Tanks.o: sources/Cursed_Tanks.cpp
 
 assem_lib: objects
 	ar -rc lib/libcursedtanks.a $(LIBRARY_O)
+	rm *.o
 
 objects:
 	$(CC) $(LIBRARY_C_S) $(CCFLAGS)

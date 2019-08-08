@@ -1,8 +1,6 @@
 #ifndef __LOGIC_H__
 #define __LOGIC_H__
 
-#include <IO.h>
-
 #define EMPTY   '0'
 #define BRICK   '1'
 #define TREE    '2'
@@ -15,6 +13,8 @@
 #define MAP_SIDE 80
 
 #define SMALL_SQUARE 4
+
+#define SIZE_TILE 4
 
 #define SIZE_MICRO_TILE 	4
 #define SIZE_MICRO_MAP_X 	88
@@ -50,4 +50,5 @@ int Validate_Tank (char **map,                  //double-ptr to map
 int Validate_Bullet (char **map,                //double-ptr to map
                      struct bullet_s *bullet,   //ptr to bullet
                      struct tank_s *tanks);     //all tanks
+
 #endif // !__LOGIC_H__

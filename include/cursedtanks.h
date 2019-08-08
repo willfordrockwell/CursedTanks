@@ -11,151 +11,130 @@ class object_c {
 	public:
 		sf::Texture texture;
 		sf::Sprite sprite;
-		object_c()
-		{
+		object_c() {
 		}
-		virtual void update()
-		{
+		~object_c() {
+		}
+		virtual void update() {
 		}
 };
 
 class tank_c : public object_c {
+
 	private:
-		tank_s tank_;
 		int place;
+		float speed = 0;
+		enum direct_e direct;
+		short health;
 	public:
 		tank_c(sf::String file,
 	   	       int x,
 		       int y,
 		       short color,
-		       enum direct_e dir)
-		{
-			tank_.coord.x = x;
-			tank_.coord.y = y;
-			tank_.direct = dir;
+		       enum direct_e dir) {
+			direct = dir;
 			texture.loadFromFile(file);
 			sprite.setTexture(texture);
 			place = color;
 			sprite.setTextureRect(sf::IntRect((color/2)*128+dir*32, (color%2)*128, 16, 16));
 			sprite.setPosition(x, y);
 		}
-		void update()
-		{
-			sprite.setPosition(Get_X(), Get_Y());
-			sprite.setTextureRect(sf::IntRect(place/2*128+tank_.direct*32, (place%2)*128, 16, 16));
+
+		enum direct_e Get_Dir() {
+			return direct;
 		}
-		int Get_X()
-		{
-			return tank_.coord.x;
+
+		void Set_Dir(enum direct_e direct_) {
+			direct = direct_;
+			sprite.setTextureRect(sf::IntRect(place/2*128+direct*32, (place%2)*128, 16, 16));
 		}
-		int Get_Y()
-		{
-			return tank_.coord.y;
-		}
-		enum direct_e Get_Dir()
-		{
-			return tank_.direct;
-		}
-		void Set_X(int x)
-		{
-			tank_.coord.x = x;
-			update();
-		}
-		void Set_Y(int y)
-		{
-			tank_.coord.y = y;
-			update();
-		}
-		void Set_Dir(enum direct_e direct)
-		{
-			tank_.direct = direct;
-			update();
-		}
-		struct coord_s Get_Coord()
-		{
-			return tank_.coord;
-		}
-		void Set_Coord(struct coord_s coord_)
-		{
-			tank_.coord.x = coord_.x;
-			tank_.coord.y = coord_.y;
-		}
-		struct coord_s Get_Map_Position()
-		{
+
+		struct coord_s Get_Map_Position() {
 			struct coord_s coord_;
-			coord_.x = tank_.coord.x/SIZE_TILE;
-			coord_.y = tank_.coord.y/SIZE_TILE;
+			coord_.x = sprite.getPosition().x/SIZE_TILE;
+			coord_.y = sprite.getPosition().y/SIZE_TILE;
 			return coord_;
+		}
+
+		void Set_Speed(float speed_) {
+			speed = speed_;
+		}
+
+		float Get_Speed() {
+			return speed;
+		}
+
+		short Get_Health() {
+			return health;
+		}
+
+		void Set_Health(short health_) {
+			health = health_;
+		}
+
+		tank_s Get_Structure() {
+			tank_s tank;
+			tank.coord.x = sprite.getPosition().x;
+			tank.coord.y = sprite.getPosition().y;
+			tank.direct = direct;
+			tank.health = health;
+			return tank;
 		}
 };
 
 class bullet_c : public object_c {
 	private:
-		bullet_s bullet_;
+		int place;
+		float speed = 0;
+		enum direct_e direct;
 	public:
 		bullet_c(sf::String file,
 		     int x,
 		     int y,
-		     enum direct_e dir)
-		{
-			bullet_.coord.x = x;
-			bullet_.coord.y = y;
-			bullet_.direct = dir;
+		     enum direct_e dir) {
+			direct = dir;
 			texture.loadFromFile(file);
 			sprite.setTexture(texture);
 			sprite.setTextureRect(sf::IntRect(dir*8+320, 100, 8, 8));
 			sprite.setPosition(x, y + 4);
 		}
-		void update()
-		{
-			sprite.setPosition(Get_X(), Get_Y());
-			sprite.setTextureRect(sf::IntRect(bullet_.direct*8+320, 100, 8, 8));
 
-		}
-		int Get_X()
-		{
-			return bullet_.coord.x;
-		}
-		int Get_Y()
-		{
-			return bullet_.coord.y - 4;
-		}
-		enum direct_e Get_Dir()
-		{
-			return bullet_.direct;
-		}
-		void Set_X(int x)
-		{
-			bullet_.coord.x = x + 4;
-			update();
-		}
-		void Set_Y(int y)
-		{
-			bullet_.coord.y = y + 4;
-			update();
-		}
-		void Set_Dir(enum direct_e direct)
-		{
-			bullet_.direct = direct;
-			update();
-		}
-		struct coord_s Get_Coord()
-                {
-                        return bullet_.coord;
-                }
-                void Set_Coord(struct coord_s coord_)
-                {
-                        bullet_.coord.x = coord_.x;
-                        bullet_.coord.y = coord_.y;
-                }
-                struct coord_s Get_Map_Position()
-                {
-                        struct coord_s coord_;
-                        coord_.x = bullet_.coord.x/SIZE_TILE;
-                        coord_.y = bullet_.coord.y/SIZE_TILE;
-                        return coord_;
-                }
+		enum direct_e Get_Dir() {
+            return direct;
+        }
+
+        void Set_Dir(enum direct_e direct_) {
+            direct = direct_;
+            sprite.setTextureRect(sf::IntRect(direct*8+320, 100, 8, 8));
+        }
+
+        struct coord_s Get_Map_Position() {
+            struct coord_s coord_;
+            coord_.x = sprite.getPosition().x/SIZE_TILE;
+            coord_.y = sprite.getPosition().y/SIZE_TILE;
+            return coord_;
+        }
+
+        void Set_Speed(float speed_) {
+            speed = speed_;
+        }
+
+        float Get_Speed() {
+            return speed;
+        }
+
+        bullet_s Get_Structure() {
+            bullet_s bullet;
+            bullet.coord.x = sprite.getPosition().x;
+            bullet.coord.y = sprite.getPosition().y;
+            bullet.direct = direct;
+            return bullet;
+        }
+
 
 };
+
+void Read_Keyboard (tank_c *tank,
+                    float time);
 
 #endif //__CURSED_TANKS_H__

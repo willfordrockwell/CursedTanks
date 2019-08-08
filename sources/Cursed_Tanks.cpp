@@ -6,6 +6,8 @@ using namespace sf;
 
 int main()
 {
+	float time;
+	Clock clock;
 // Initial window
     RenderWindow window(VideoMode(704, 704), "CursedTanks");
     View view(FloatRect(0,0,352,352));
@@ -28,17 +30,22 @@ int main()
 // Initial world object's sprites
     Color color(255,255,255);
     tank_c tank("textures/texture_map.png", 20 * 16, 17 * 16, 3, LEFT);
+	tank.Set_Speed(0.025);
     bullet_c bullet("textures/texture_map.png", 19 * 16, 17 * 16, LEFT);
     if (Macro_To_Micro(macro_tile, micro_tile))
         std::cout << "Macro_map can't be read";
 
 // Game cycle
     while (window.isOpen()) {
+		time = clock.getElapsedTime().asMicroseconds();
+		clock.restart();
+		time = time / 500;
         Event event;
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed)
                 window.close();
         }
+		Read_Keyboard(&tank, time);
         window.clear();
         Draw_Map(&window, micro_tile, map_sprite);
         window.draw(tank.sprite);
