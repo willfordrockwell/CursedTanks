@@ -4,10 +4,10 @@ CPPC = g++
 CPPCFLAGS = -g
 CPPCFLAGS += -I include
 CPPCFLAGS += -pipe
-CPPCFLAGS += -lpthread
 
 CCFLAGS = $(CPPCFLAGS)
 CCFLAGS += -std=c99
+CCFLAGS += -lpthread
 
 PHONY_N = player clean create assem_lib clean_lib objects
 
@@ -40,7 +40,7 @@ test: test.o
 	$(CC) obj/test.o -o bin/test -L./lib -lcursedtanks
 
 Cursed_Tanks.o: sources/Cursed_Tanks.cpp
-	$(CPPC) sources/Cursed_Tanks.cpp -o obj/Cursed_Tanks.o $(CPPCFLAGS)
+	$(CPPC) -c sources/Cursed_Tanks.cpp -o obj/Cursed_Tanks.o $(CPPCFLAGS)
 
 Server.o: sources/Server.c
 	$(CC) -c sources/Server.c -o obj/Server.o $(CCFLAGS)
