@@ -10,8 +10,23 @@ int main(int argc, char const *argv[])
     int ret;
     char buff[255];
     char str_port[PORT_LENGTH];
-    struct sockaddr_in serv_addr, cli_addr;
-    socklen_t serv_len = sizeof(serv_addr), cli_len = sizeof(cli_addr);
+    struct sockaddr_in serv_addr;
+    socklen_t serv_len = sizeof(serv_addr);
+
+    struct info_to_player_s info;
+    struct msg_to_thr_s msg;
+
+    //fill into info map, tank, bullets
+    //Load_Map(info.map);
+    for (int i = 0; i < NUM_CLIENTS; i++) {
+        info.tanks[i].coord.x = i * SIZE_MACRO_TILE;
+        info.tanks[i].coord.y = i * SIZE_MACRO_TILE;
+        info.tanks[i].direct = UP;
+        info.tanks[i].health = 5;
+        info.bullets[i].coord.x = -1;
+        info.bullets[i].coord.y = -1;
+    }
+    msg.msg = &info;
 
     pthread_mutex_init(&create_thread, NULL);
     pthread_mutex_init(&chech_info, NULL);
@@ -34,9 +49,9 @@ int main(int argc, char const *argv[])
     //init players
     int cntd_clients = 0;
     for(int client = 0; client < NUM_CLIENTS; client++) {
-        Connect_To_Client(sock, &cli_addr, &cli_len, client, &cntd_clients);
+        Connect_To_Client(sock, client, &cntd_clients, &msg);
     }
 
     close(sock);
-    return 0;
+    pthread_exit(0);
 }

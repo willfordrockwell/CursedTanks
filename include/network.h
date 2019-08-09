@@ -7,6 +7,8 @@
 #include <arpa/inet.h>
 #include <sys/types.h>
 #include <pthread.h>
+#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 #include <stdio.h>
@@ -21,9 +23,23 @@
 #define PORT_LENGTH 6
 #define IP_LENGTH 17
 
+struct info_to_server_s {
+    char map[SIZE_MICRO_MAP_Y][SIZE_MICRO_MAP_X];
+    struct tank_s tank;
+    struct bullet_s bullet;
+};
+
+struct info_to_player_s {
+    char map[SIZE_MICRO_MAP_Y][SIZE_MICRO_MAP_X];
+    struct tank_s tanks[NUM_CLIENTS];
+    struct bullet_s bullets[NUM_CLIENTS];
+};
+
 struct msg_to_thr_s {
-    struct sockaddr cli_addr;
+    struct sockaddr_in cli_addr;
+    socklen_t cli_size;
     int *cli_count;
+    struct info_to_player_s *msg;
 };
 
 void Get_IP(char *auto_ip,                  //auto IP
@@ -36,30 +52,26 @@ int Init_Server(int *sock,                  //ptr to socket
                 struct sockaddr_in *addr_s, //ptr to addr_s
                 socklen_t *size_s);         //ptr to server addr size
 
-int Connect_To_Server(int *sock,               //ptr to socket
-                      struct sockaddr_in *addr,//filled struct
-                      socklen_t *size);        //counted size
-
-void Connect_To_Client(int sock,                //socket
+int Connect_To_Server(int *sock,                //ptr to socket
                       struct sockaddr_in *addr, //filled struct
                       socklen_t *size,          //counted size
-                      int num_client,           //number of waiting client
-                      int *count_client);       //count of connected clients
+                      int *number);             //ptr to number of client
+
+void Connect_To_Client(int sock,                 //socket
+                       int num_client,           //number of waiting client
+                       int *count_client,        //count of connected clients
+                       struct msg_to_thr_s *msg);//ptr to info about game
 
 void *Thread_Server(void *arg);
 
-void Send(int sock,                         //socket
-          struct sockaddr_in *addr,         //data for connect
-          socklen_t *size,                  //counted size
-          char **map,                       //double-ptr to map
-          struct bullet_s *bullets,           //ptr to bullets
-          struct tank_s *tanks);              //ptr to tanks
+int Send_To_Player(int sock,                         //socket
+                   struct sockaddr_in *addr,         //data for connect
+                   socklen_t *size,                  //counted size
+                   struct info_to_player_s *info);   //ptr to info
 
-void Recv(int sock,                         //socket
-          struct sockaddr_in *addr,         //data for connect
-          socklen_t *size,                  //counted size
-          char **map,                       //double-ptr to map
-          struct bullet_s *bullets,           //ptr to bullets
-          struct tank_s *tanks);              //ptr to tanks
+int Recv_From_Server(int sock,                      //socket
+                     struct sockaddr_in *addr,      //data for connect
+                     socklen_t *size,               //counted size
+                     struct info_to_player_s *info);//ptr to info
 
 #endif // !__NETWORK_H__
