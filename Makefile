@@ -2,9 +2,9 @@ CC = gcc
 CPPC = g++
 
 CPPCFLAGS = -g
-CPPCFLAGS += -c
 CPPCFLAGS += -I include
 CPPCFLAGS += -pipe
+CPPCFLAGS += -lpthread
 
 CCFLAGS = $(CPPCFLAGS)
 CCFLAGS += -std=c99
@@ -31,29 +31,29 @@ SFML_LIBRARIES := $(addprefix -l, $(SFML_LIBRARIES))
 all: player server test
 
 player: Cursed_Tanks.o
-	$(CPPC) obj/Cursed_Tanks.o -o bin/CursedTanks -g $(SFML_LIBRARIES) -L./lib -lcursedtanks
+	$(CPPC) obj/Cursed_Tanks.o -o bin/CursedTanks $(SFML_LIBRARIES) -L./lib -lcursedtanks
 
 server: Server.o
-	$(CC) obj/Server.o -o bin/Server -g -L./lib -lcursedtanks
+	$(CC) obj/Server.o -o bin/Server $(CCFLAGS) -L./lib -lcursedtanks
 
 test: test.o
-	$(CC) obj/test.o -o bin/test -g -L./lib -lcursedtanks
+	$(CC) obj/test.o -o bin/test -L./lib -lcursedtanks
 
 Cursed_Tanks.o: sources/Cursed_Tanks.cpp
 	$(CPPC) sources/Cursed_Tanks.cpp -o obj/Cursed_Tanks.o $(CPPCFLAGS)
 
 Server.o: sources/Server.c
-	$(CC) sources/Server.c -o obj/Server.o $(CCFLAGS)
+	$(CC) -c sources/Server.c -o obj/Server.o $(CCFLAGS)
 
 test.o: sources/test.c
-	$(CC) sources/test.c -o obj/test.o $(CCFLAGS)
+	$(CC) -c sources/test.c -o obj/test.o $(CCFLAGS)
 
 assem_lib: objects
 	ar -rc lib/libcursedtanks.a $(LIBRARY_O)
 
 objects:
-	$(CC) $(LIBRARY_C_S) $(CCFLAGS)
-	$(CPPC) $(LIBRARY_CPP_S) $(CPPCFLAGS)
+	$(CC) $(LIBRARY_C_S) -c $(CCFLAGS)
+	$(CPPC) $(LIBRARY_CPP_S) -c $(CPPCFLAGS)
 
 clean_lib:
 	rm lib/*.a
