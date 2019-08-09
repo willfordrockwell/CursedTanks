@@ -2,6 +2,7 @@
 #include <map.h>
 #include <cursedtanks.h>
 #include <iostream>
+#include <malloc.h>
 using namespace sf;
 
 int main()
@@ -14,13 +15,11 @@ int main()
     window.setView(view);
 
 // Initial map sprite
-    String micro_tile[SIZE_MICRO_MAP_X];
-    for(int i = 0; i < SIZE_MICRO_MAP_X; i++) {
-        micro_tile[i] = "0000000000000000000000000000000000\
-						00000000000000000000000000000000000\
-						00000000000000000000000000000000000\
-						0000000000000000";
-    }
+    char **micro_tile;
+	micro_tile =(char** ) malloc(sizeof(char*) * SIZE_MICRO_MAP_Y);
+	for (int i = 0; i < SIZE_MICRO_MAP_Y; i++) {
+		micro_tile[i] = (char* ) malloc(sizeof(char) * SIZE_MICRO_MAP_X);
+	}
     Texture map_texture;
     Sprite map_sprite;
     map_texture.loadFromFile("textures/texture_map.png");
@@ -52,5 +51,12 @@ int main()
         window.draw(bullet.sprite);
         window.display();
     }
+
+// Free memory
+	for (int i =0; i < SIZE_MICRO_MAP_Y; i++) {
+		free(micro_tile[i]);
+	}
+	free(micro_tile);
+
     return 0;
 }

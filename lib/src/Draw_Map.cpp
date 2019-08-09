@@ -3,7 +3,7 @@
 #include <cursedtanks.h>
 
 int Draw_Map(sf::RenderWindow *window,
-             sf::String *micro_map,
+             char **micro_map,
              sf::Sprite map_sprite)
 {
 	for(int i = 0; i < SIZE_MICRO_MAP_Y; i++) {

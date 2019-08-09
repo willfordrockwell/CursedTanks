@@ -7,8 +7,8 @@
 //! for ranged figure: +0 - full, +1 - up, +2 - down, +3 - left, +4 - rigth ?
 
 
-int Macro_To_Micro(sf::String * macro,
-                   sf::String * micro)
+int Macro_To_Micro(sf::String *macro,
+                   char **micro)
 {
     int add_x, add_y;
     add_x = (SIZE_MICRO_MAP_X - (SIZE_MACRO_MAP_X * SIZE_TILE)) / 2;
