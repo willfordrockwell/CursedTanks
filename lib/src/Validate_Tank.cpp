@@ -1,11 +1,9 @@
 #include <logic.h>
 #include <iostream>
-int Validate_Tank (char **map,              //double-ptr to map
+int Validate_Tank (char **map,       //double-ptr to map
                    tank_c *tank)     //ptr to tank
 {
     sf::Vector2i coord_map;
-
-    //sf::Vector2f coord_tank = tank -> sprite.getPosition()
 
     switch(tank -> Get_Dir())
     {

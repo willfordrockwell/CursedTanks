@@ -46,49 +46,51 @@ struct bullet_s {
 
 class object_c {
 
+	protected:
+		short active;
+		enum direct_e direct;
+		float speed;
 	public:
-		sf::Image image;
 		sf::Texture texture;
 		sf::Sprite sprite;
+
 		object_c() {
+			active = 0;
 		}
+
 		~object_c() {
 		}
+
+		virtual void Init(){
+		}
+
 		virtual void update() {
 		}
-};
 
-class tank_c : public object_c {
+		short Is_Active()
+		{
+			return active;
+		}
 
-	private:
-		int place;
-		float speed = 0;
-		enum direct_e direct;
-		short health;
-	public:
-		tank_c(sf::String file,
-	   	       int x,
-		       int y,
-		       short color,
-		       enum direct_e dir) {
-			direct = dir;
-			//sf::Image image;
-			image.loadFromFile(file);
-			image.createMaskFromColor(sf::Color(0,0,0,255), 0);
-			texture.loadFromImage(image);
-			sprite.setTexture(texture);
-			place = color;
-//			sprite.setTextureRect(sf::IntRect((color/2)*128+dir*32, (color%2)*128, 15, 15));
-			sprite.setPosition(x, y);
+		void Set_Active(short active_)
+		{
+			active = active_;
 		}
 
 		enum direct_e Get_Dir() {
 			return direct;
 		}
 
-		void Set_Dir(enum direct_e direct_) {
+		virtual void Set_Dir(enum direct_e direct_) {
 			direct = direct_;
-			sprite.setTextureRect(sf::IntRect(place/2*128+direct*32, (place%2)*128, 15, 15));
+		}
+
+		void Set_Speed(float speed_) {
+			speed = speed_;
+		}
+
+		float Get_Speed() {
+			return speed;
 		}
 
 		sf::Vector2i Get_Map_Position(float x_, float y_) {
@@ -98,12 +100,48 @@ class tank_c : public object_c {
 			return coord_;
 		}
 
-		void Set_Speed(float speed_) {
-			speed = speed_;
+};
+
+class tank_c : public object_c {
+
+	private:
+		int place;
+		short health;
+	public:
+		tank_c()
+		{
+			active = 0;
+		}
+		tank_c(sf::String file,
+	   	       int x,
+		       int y,
+		       short color,
+		       enum direct_e dir) {
+			active = 1;
+			direct = dir;
+			texture.loadFromFile(file);
+			sprite.setTexture(texture);
+			place = color;
+			sprite.setTextureRect(sf::IntRect((color/2)*128+dir*32, (color%2)*128, 15, 15));
+			sprite.setPosition(x, y);
+		}
+		void Init(sf::String file,
+	   	       int x,
+		       int y,
+		       short color,
+		       enum direct_e dir) {
+			active = 1;
+			direct = dir;
+			texture.loadFromFile(file);
+			sprite.setTexture(texture);
+			place = color;
+			sprite.setTextureRect(sf::IntRect((color/2)*128+dir*32, (color%2)*128, 15, 15));
+			sprite.setPosition(x, y);
 		}
 
-		float Get_Speed() {
-			return speed;
+		void Set_Dir(enum direct_e direct_) {
+			direct = direct_;
+			sprite.setTextureRect(sf::IntRect(place/2*128+direct*32, (place%2)*128, 15, 15));
 		}
 
 		short Get_Health() {
@@ -127,45 +165,38 @@ class tank_c : public object_c {
 class bullet_c : public object_c {
 	private:
 		int place;
-		float speed = 0;
-		enum direct_e direct;
 	public:
+		bullet_c()
+		{
+			active = 0;
+		}
 		bullet_c(sf::String file,
 		     int x,
 		     int y,
 		     enum direct_e dir) {
+			active = 1;
 			direct = dir;
-			//sf::Image image;
-			image.loadFromFile(file);
-			image.createMaskFromColor(sf::Color(0,0,0,255), 0);
-			texture.loadFromImage(image);
+			texture.loadFromFile(file);
 			sprite.setTexture(texture);
-			sprite.setTextureRect(sf::IntRect(dir*8+320, 100, 8, 8));
-			sprite.setPosition(x, y + 4);
+			sprite.setTextureRect(sf::IntRect(dir*8+322, 102, 4, 4));
+			sprite.setPosition(x, y);
 		}
 
-		enum direct_e Get_Dir() {
-            return direct;
-        }
+		void Init(sf::String file,
+		     int x,
+		     int y,
+		     enum direct_e dir) {
+			active = 1;
+			direct = dir;
+			texture.loadFromFile(file);
+			sprite.setTexture(texture);
+			sprite.setTextureRect(sf::IntRect(dir*8+322, 102, 4, 4));
+			sprite.setPosition(x, y);
+		}
 
         void Set_Dir(enum direct_e direct_) {
             direct = direct_;
-            sprite.setTextureRect(sf::IntRect(direct*8+320, 100, 8, 8));
-        }
-
-        struct coord_s Get_Map_Position() {
-            struct coord_s coord_;
-            coord_.x = sprite.getPosition().x/SIZE_TILE;
-            coord_.y = sprite.getPosition().y/SIZE_TILE;
-            return coord_;
-        }
-
-        void Set_Speed(float speed_) {
-            speed = speed_;
-        }
-
-        float Get_Speed() {
-            return speed;
+            sprite.setTextureRect(sf::IntRect(direct*8+322, 102, 4, 4));
         }
 
         bullet_s Get_Structure() {
@@ -182,11 +213,14 @@ class bullet_c : public object_c {
 
 int Get_Map_From_Pix (short x);
 
-int Validate_Tank (char **map,                  //double-ptr to map
+int Validate_Tank (char **map,           //double-ptr to map
                    tank_c *tank);        //ptr to tank
 
-int Validate_Bullet (char **map,                //double-ptr to map
+int Validate_Bullet (char **map,         //double-ptr to map
                      bullet_c *bullet,   //ptr to bullet
-                     tank_c *tanks);     //all tanks
+                     tank_c *tanks,
+					 short num_arrays);     //all tanks
 
+int Handling_Bullet (bullet_c *bullet,
+					  float time);
 #endif // !__LOGIC_H__

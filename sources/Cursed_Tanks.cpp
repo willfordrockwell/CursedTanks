@@ -31,9 +31,12 @@ int main()
 
 // Initial world object's sprites
     Color color(255,255,255);
-    tank_c tank("textures/texture_map.png", 20 * 16, 17 * 16, 3, LEFT);
-	tank.Set_Speed(0.020);
-    bullet_c bullet("textures/texture_map.png", 19 * 16, 17 * 16, LEFT);
+	tank_c tanks[4];
+    tanks[0].Init("textures/texture_map.png", 20 * 16, 17 * 16, 3, LEFT);
+//    tanks[1].Init("textures/texture_map.png", 20 * 16, 17 * 16, 2, LEFT);
+	tanks[0].Set_Speed(0.020);
+
+	bullet_c bullets[4];
     if (Macro_To_Micro(macro_tile, micro_tile))
         std::cout << "Macro_map can't be read";
 
@@ -41,19 +44,33 @@ int main()
     while (window.isOpen()) {
 		time = clock.getElapsedTime().asMicroseconds();
 		clock.restart();
-		time = time / 800;
+		time = time / 500;
         Event event;
         while (window.pollEvent(event)) {
-            if (event.type == Event::Closed)
+            if (event.type == Event::Closed){
                 window.close();
+			}
+			if (event.type == Event::KeyPressed){
+				if (event.key.code == Keyboard::Space) {
+					if (!bullets[0].Is_Active())
+					{
+						Spawn_Bullet(event, tanks[0], &bullets[0]);
+						bullets[0].Set_Speed(0.075);
+					}
+				}
+			}
         }
-		Read_Keyboard(&tank, time);
-//		Validate_Tank(micro_tile, &tank);
+		Read_Keyboard(&tanks[0], time);
+		Validate_Tank(micro_tile, &tanks[0]);
+		Handling_Bullet(&bullets[0], time);
+		Validate_Bullet(micro_tile, bullets, tanks, 4);
         window.clear();
         Draw_Map(&window, micro_tile, map_sprite);
-        window.draw(tank.sprite);
-        window.draw(bullet.sprite);
-//		Draw_First_Plan(&window, map_sprite, micro_tile, tank.sprite.getPosition());
+		Draw_Objects(&window, tanks, bullets, 4);
+		for(int i = 0; i < 4; i++) {
+			Draw_First_Plan(&window, map_sprite, micro_tile, tanks[i].sprite.getPosition(), 16);
+			Draw_First_Plan(&window, map_sprite, micro_tile, bullets[i].sprite.getPosition(), 4);
+		}
         window.display();
     }
 

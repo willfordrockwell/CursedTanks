@@ -1,10 +1,14 @@
 #include <cursedtanks.h>
 
-int Draw_First_Plan(sf::RenderWindow *window, sf::Sprite map_sprite, char **map, sf::Vector2f coord_object)
+int Draw_First_Plan(sf::RenderWindow *window,
+					sf::Sprite map_sprite,
+					char **map,
+					sf::Vector2f coord_object,
+					short size)
 {
-		int x, y;
-		for (int i = 0; i <= SIZE_BASE_TILE; i += (SIZE_BASE_TILE-1) / 2) {
-			for (int j = 0; j <= SIZE_BASE_TILE; j += (SIZE_BASE_TILE-1) / 2) {
+		int x, y, coeff;
+		for (int i = 0; i <= size; i += (size) / 2) {
+			for (int j = 0; j <= size; j += (size) / 2) {
 				x = (coord_object.x+i) / (SIZE_BASE_TILE / 2);
 				y = (coord_object.y+j) / (SIZE_BASE_TILE / 2);
 				switch(map[y*2][x*2]) {
