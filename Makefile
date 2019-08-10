@@ -12,7 +12,7 @@ CCFLAGS += -std=c99
 PHONY_N = base clean create obj_lib create_in_lib objects
 
 #.c sources Cursed_Tanks
-LIBRARY_C_S := $(wildcard lib/src/*.c)
+#LIBRARY_C_S := $(wildcard lib/src/*.c)
 
 #.cpp sources Cursed_Tanks
 LIBRARY_CPP_S := $(wildcard lib/src/*.cpp)
@@ -41,7 +41,7 @@ assem_lib: objects
 	rm *.o
 
 objects:
-	$(CC) $(LIBRARY_C_S) $(CCFLAGS)
+#	$(CC) $(LIBRARY_C_S) $(CCFLAGS)
 	$(CPPC) $(LIBRARY_CPP_S) $(CPPCFLAGS)
 
 clean_lib:
