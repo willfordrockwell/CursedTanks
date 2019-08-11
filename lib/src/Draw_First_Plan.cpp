@@ -6,7 +6,7 @@ int Draw_First_Plan(sf::RenderWindow *window,
 					sf::Vector2f coord_object,
 					short size)
 {
-		int x, y, coeff;
+		int x, y;
 		for (int i = 0; i <= size; i += (size) / 2) {
 			for (int j = 0; j <= size; j += (size) / 2) {
 				x = (coord_object.x+i) / (SIZE_BASE_TILE / 2);
