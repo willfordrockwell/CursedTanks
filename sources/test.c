@@ -33,11 +33,6 @@ int main(int argc, char const *argv[])
     inet_pton(AF_INET, serv_ip, &(serv.sin_addr.s_addr));
     serv.sin_port = htons(atoi(serv_port));
 
-    sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-    if (sock == -1) {
-        perror("create socket");
-        return -1;
-    }
     //connect to server's thread
     ret = Connect_To_Server(&sock, &serv, &serv_len, &number);
     if (ret == -1) {
