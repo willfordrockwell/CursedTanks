@@ -1,6 +1,8 @@
 #ifndef __LOGIC_H__
 #define __LOGIC_H__
 
+#include <string.h>
+
 #include <IO.h>
 
 #define EMPTY   '0'
@@ -23,6 +25,7 @@
 #define SIZE_MACRO_MAP_X 	20
 #define SIZE_MACRO_MAP_Y 	20
 
+#define NUM_CLIENTS 2
 
 enum direct_e { UP, LEFT, DOWN, RIGHT };
 
@@ -42,6 +45,19 @@ struct bullet_s {
     enum direct_e direct;
 };
 
+struct info_to_server_s {
+    char map[SIZE_MICRO_MAP_Y][SIZE_MICRO_MAP_X];
+    struct tank_s tank;
+    struct bullet_s bullet;
+    char cli_num;
+};
+
+struct info_to_player_s {
+    char map[SIZE_MICRO_MAP_Y][SIZE_MICRO_MAP_X];
+    struct tank_s tanks[NUM_CLIENTS];
+    struct bullet_s bullets[NUM_CLIENTS];
+};
+
 int Get_Map_From_Pix (short x);
 
 int Validate_Tank (char **map,                  //double-ptr to map
@@ -50,4 +66,7 @@ int Validate_Tank (char **map,                  //double-ptr to map
 int Validate_Bullet (char **map,                //double-ptr to map
                      struct bullet_s *bullet,   //ptr to bullet
                      struct tank_s *tanks);     //all tanks
+
+void Update_Info (struct info_to_player_s *server_info,  //ptr to server info
+                  struct info_to_server_s *player_info); //ptr to player info
 #endif // !__LOGIC_H__
