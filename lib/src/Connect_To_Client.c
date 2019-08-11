@@ -1,7 +1,7 @@
 #include <network.h>
 
 void Connect_To_Client(int sock,                 //socket
-                       int num_client,           //number of waiting client
+                       struct sockaddr_in serv,  //sockaddr
                        int *count_client,        //count of connected clients
                        struct msg_to_thr_s *msg) //ptr to info about game
 {
@@ -18,13 +18,15 @@ void Connect_To_Client(int sock,                 //socket
     } while (strcmp(buff, "Start") != 0);
     free(buff);
 
-    memcpy(&(msg->cli_addr), &addr, size);
-    msg->cli_count = count_client;
-    msg->cli_size = size;
-
-    pthread_create(&tid, NULL, Thread_Server, (void *)msg);
     pthread_mutex_lock(&create_thread);
+    memcpy(&(msg->cli_addr[*count_client]), &addr, size);
+    memcpy(&(msg->serv_addr), &serv, size);
+    msg->cli_count = count_client;
+    msg->cli_size[*count_client] = size;
+
+    pthread_create(&tid, NULL, Thread_Server, msg);
     //wait for new thread's unlock
     pthread_mutex_lock(&create_thread);
     pthread_mutex_unlock(&create_thread);
+    return;
 }

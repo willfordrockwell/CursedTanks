@@ -4,6 +4,7 @@ CPPC = g++
 CPPCFLAGS = -g
 CPPCFLAGS += -I include
 CPPCFLAGS += -pipe
+CPPCFLAGS += -Wall
 
 CCFLAGS = $(CPPCFLAGS)
 CCFLAGS += -std=c99
@@ -37,7 +38,7 @@ server: Server.o
 	$(CC) obj/Server.o -o bin/Server $(CCFLAGS) -L./lib -lcursedtanks
 
 test: test.o
-	$(CC) obj/test.o -o bin/test -L./lib -lcursedtanks
+	$(CC) obj/test.o -o bin/test $(CCFLAGS) -L./lib -lcursedtanks
 
 Cursed_Tanks.o: sources/Cursed_Tanks.cpp
 	$(CPPC) -c sources/Cursed_Tanks.cpp -o obj/Cursed_Tanks.o $(CPPCFLAGS)

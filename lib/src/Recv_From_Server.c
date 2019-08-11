@@ -1,23 +1,27 @@
 #include <network.h>
 
-int Recv_From_Server(int sock,                      //socket
-                     struct sockaddr_in *addr,      //data for connect
-                     socklen_t *size,               //counted size
-                     struct info_to_player_s *info) //ptr to info
+void *Recv_From_Server(void *arg)
 {
+    extern pthread_mutex_t recv_msg;
+    struct msg_to_recv_s msg;
+    memcpy(&msg, arg, sizeof(msg));
+    struct sockaddr_in addr;
+    socklen_t size = sizeof(addr);
 
-    int size_map = sizeof(char) * SIZE_MICRO_MAP_X * SIZE_MICRO_MAP_Y;
-    int size_bullets = sizeof(struct bullet_s) * NUM_CLIENTS;
-    int size_tanks = sizeof(struct tank_s) * NUM_CLIENTS;
-    int size_buff = size_map + size_bullets + size_tanks;
+    const int size_buff = SIZE_MAP + SIZE_TANKS + SIZE_BULLETS;
 
     char buff[size_buff];
-    if (recvfrom(sock, buff, size_buff, MSG_WAITALL, (struct sockaddr *)addr, size) < 1) {
-        perror("Error recv start message");
-        return -1;
+
+    while(1) {
+        if (recvfrom(msg.socket, buff, size_buff, MSG_WAITALL,
+            (struct sockaddr *)&addr, &size) < 1) {
+                perror("Error recv message from server");
+        }
+        pthread_mutex_lock(&recv_msg);
+        memcpy(&(msg.info->map), buff, SIZE_MAP);
+        memcpy(&(msg.info->tanks), buff + SIZE_MAP, SIZE_TANKS);
+        memcpy(&(msg.info->bullets), buff + SIZE_MAP + SIZE_TANKS,
+               SIZE_BULLETS);
+        pthread_mutex_unlock(&recv_msg);
     }
-    memcpy(&(info->map), buff, size_map);
-    memcpy(&(info->tanks), buff + size_map, size_tanks);
-    memcpy(&(info->bullets), buff + size_map + size_tanks, size_bullets);
-    return 0;
 }
