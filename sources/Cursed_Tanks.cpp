@@ -36,7 +36,7 @@ int main()
     pthread_mutex_init(&recv_msg, NULL);
 
 //get info to connect server
-    Get_IP((char*)"127.0.0.1", serv_ip);
+    Get_IP((char*)"91.196.245.199", serv_ip);
     Get_Port((char*)"12345", serv_port);
 
     serv.sin_family = AF_INET;
@@ -51,6 +51,7 @@ int main()
     }
     sending.cli_num = number;
     msg.cli_num = number;
+    printf("%d\n", number);
 
 //get start info
     msg.socket = sock;
