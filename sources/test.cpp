@@ -40,25 +40,43 @@ int main(int argc, char const *argv[])
         return 0;
     }
     sending.cli_num = number;
+	printf("%d\n", number);
     //get start info
     msg.socket = sock;
     msg.info = &info;
 
-    if (recvfrom(msg.socket, buff, size_buff, MSG_WAITALL,
+    if (recvfrom(msg.socket, (char *) &info, size_buff, MSG_WAITALL,
                  (struct sockaddr *)&serv, &serv_len) < 1) {
                     perror("recv message from server");
                     return 0;
     }
-    memcpy(&(msg.info->map), buff, SIZE_MAP);
-    memcpy(&(msg.info->tanks), buff + SIZE_MAP, SIZE_TANKS);
-    memcpy(&(msg.info->bullets), buff + SIZE_MAP + SIZE_TANKS, SIZE_BULLETS);
+//    memcpy(&(msg.info->map), buff, SIZE_MAP);
+//    memcpy(&(msg.info->tanks), buff + SIZE_MAP, SIZE_TANKS);
+ //   memcpy(&(msg.info->bullets), buff + SIZE_MAP + SIZE_TANKS, SIZE_BULLETS);
+	for(int i = 0; i < NUM_CLIENTS; i++) {
+		if (i == number) {
+			printf("My ");
+		}
+		else {
+			printf("   ");
+		}
+		printf("%d`s tank   coord: %2d, %2d dir: %2d, health: %2d\n",i,info.tanks[i].coord.x,
+			   info.tanks[i].coord.y, info.tanks[i].direct, info.tanks[i].health);
+		if (i == number) {
+			printf("My ");
+		}
+		else {
+			printf("   ");
+		}
+		printf("%d`s bullet coord: %2d, %2d dir: %2d\n",i,info.bullets[i].coord.x,
+			   info.bullets[i].coord.y, info.bullets[i].direct);
+	}
     //create recv thread
-    pthread_create(&tid, NULL, Recv_From_Server, &msg);
+	pthread_create(&tid, NULL, Recv_From_Server, &msg);
     //game loop
     while (1) {
         //input
-        //filling info
-        //MAY BE IN INPUT FILL IN SENDING???????
+        //filling in        //MAY BE IN INPUT FILL IN SENDING???????
         pthread_mutex_lock(&recv_msg);
         memcpy(&(sending.map), &(info.map),
                SIZE_MICRO_MAP_X * SIZE_MACRO_MAP_Y);

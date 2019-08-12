@@ -37,6 +37,7 @@ struct msg_to_thr_s {
 
 struct msg_to_recv_s {
     int socket;
+	char **map;
     struct info_to_player_s *info;
 };
 

@@ -33,8 +33,8 @@
 enum direct_e { UP, LEFT, DOWN, RIGHT };
 
 struct coord_s {
-    short x;
-    short y;
+    int x;
+    int y;
 };
 
 struct tank_s {
@@ -169,13 +169,12 @@ class tank_c : public object_c {
 			health = health_;
 		}
 
-		tank_s Get_Structure() {
-			tank_s tank;
-			tank.coord.x = sprite.getPosition().x;
-			tank.coord.y = sprite.getPosition().y;
-			tank.direct = direct;
-			tank.health = health;
-			return tank;
+		tank_s Get_Structure(tank_s *tank) {
+			tank->coord.x = sprite.getPosition().x;
+			tank->coord.y = sprite.getPosition().y;
+			tank->direct = direct;
+			tank->health = health;
+			return *tank;
 		}
 };
 
@@ -216,12 +215,11 @@ class bullet_c : public object_c {
             sprite.setTextureRect(sf::IntRect(direct*8+322, 102, 4, 4));
         }
 
-        bullet_s Get_Structure() {
-            bullet_s bullet;
-            bullet.coord.x = sprite.getPosition().x;
-            bullet.coord.y = sprite.getPosition().y;
-            bullet.direct = direct;
-            return bullet;
+        bullet_s Get_Structure(bullet_s *bullet) {
+            bullet->coord.x = sprite.getPosition().x;
+            bullet->coord.y = sprite.getPosition().y;
+            bullet->direct = direct;
+            return *bullet;
         }
 
 

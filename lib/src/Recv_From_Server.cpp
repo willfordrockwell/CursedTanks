@@ -22,6 +22,9 @@ void *Recv_From_Server(void *arg)
         memcpy(&(msg.info->tanks), buff + SIZE_MAP, SIZE_TANKS);
         memcpy(&(msg.info->bullets), buff + SIZE_MAP + SIZE_TANKS,
                SIZE_BULLETS);
+		for(int i = 0; i < SIZE_MICRO_MAP_Y; i++) {
+			memcpy(msg.map[i], msg.info->map[i], SIZE_MICRO_MAP_X);
+		}
         pthread_mutex_unlock(&recv_msg);
     }
 }

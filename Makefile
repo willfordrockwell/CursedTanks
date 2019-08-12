@@ -33,10 +33,10 @@ SFML_LIBRARIES := $(addprefix -l, $(SFML_LIBRARIES))
 all: player server test
 
 player: Cursed_Tanks.o
-	$(CPPC) obj/Cursed_Tanks.o -o bin/CursedTanks $(SFML_LIBRARIES) -L./lib -lcursedtanks
+	$(CPPC) obj/Cursed_Tanks.o -o bin/CursedTanks $(SFML_LIBRARIES) -L./lib -lcursedtanks -lpthread
 
 server: Server.o
-	$(CPPC) obj/Server.o -o bin/Server $(CPPCFLAGS) -L./lib -lcursedtanks
+	$(CPPC) obj/Server.o -o bin/Server $(CPPCFLAGS) -L./lib -lcursedtanks $(SFML_LIBRARIES)
 
 test: test.o
 	$(CPPC) obj/test.o -o bin/test $(CPPCFLAGS) -L./lib -lcursedtanks

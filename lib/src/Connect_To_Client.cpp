@@ -11,7 +11,7 @@ void Connect_To_Client(int sock,                 //socket
     extern pthread_mutex_t create_thread;
 
     struct sockaddr_in addr;
-    socklen_t size;
+    socklen_t size = sizeof(addr);
 
     do {
         recvfrom(sock, buff, 255, MSG_WAITALL, (struct sockaddr *)&addr, &size);

@@ -1,6 +1,6 @@
 #include <network.h>
 
-void *Thread_Server (void *arg) 
+void *Thread_Server (void *arg)
 {
     extern pthread_mutex_t create_thread;
     extern pthread_mutex_t check_info;
@@ -19,6 +19,7 @@ void *Thread_Server (void *arg)
 
     ret = Init_Socket(&sock, &(msg.serv_addr), &recv_len);
     if (ret == -1) {
+		pthread_mutex_unlock(&create_thread);
         pthread_exit(0);
     }
     //telling to player its count number
@@ -34,7 +35,7 @@ void *Thread_Server (void *arg)
     //unlock mutex and continue Server's main
     pthread_mutex_unlock(&create_thread);
     //wait for all connecned players
-    while(*(msg.cli_count) < NUM_CLIENTS);
+    while(*(msg.cli_count) < NUM_CLIENTS) printf("%d's Waiting...", cli_number);
     //begin game
     //get info about all players
     memcpy(&msg, arg, sizeof(msg));
