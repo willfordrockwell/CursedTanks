@@ -41,22 +41,13 @@ int main(int argc, char const *argv[])
 	info.tanks[1].coord.y = 16;
 	info.tanks[1].direct = UP;
 	info.tanks[1].health = 5;
-   // for (int i = 0; i < NUM_CLIENTS; i++) {
-   //     info.tanks[i].coord.x = (i/2 + 1) * SIZE_MACRO_TILE;
-   //     info.tanks[i].coord.y = (i%2 + 1) * SIZE_MACRO_TILE;
-   //     info.tanks[i].direct = UP;
-   //     info.tanks[i].health = 5;
-        //info.bullets[i].coord.x = -1;
-        //info.bullets[i].coord.y = -1;
-        //info.bullets[i].direct = UP;
-//    }
     msg.info = &info;
 
     pthread_mutex_init(&create_thread, NULL);
     pthread_mutex_init(&check_info, NULL);
 
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    serv_addr.sin_addr.s_addr = INADDR_ANY;
 
     //init port and show
     Get_Port((char*)"12345", str_port);

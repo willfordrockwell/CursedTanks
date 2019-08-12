@@ -35,7 +35,8 @@ void *Thread_Server (void *arg)
     //unlock mutex and continue Server's main
     pthread_mutex_unlock(&create_thread);
     //wait for all connecned players
-    while(*(msg.cli_count) < NUM_CLIENTS) printf("%d's Waiting...", cli_number);
+    printf("player connected\n");
+    while(*(msg.cli_count) < NUM_CLIENTS)// printf("%d's Waiting...", cli_number);
     //begin game
     //get info about all players
     memcpy(&msg, arg, sizeof(msg));

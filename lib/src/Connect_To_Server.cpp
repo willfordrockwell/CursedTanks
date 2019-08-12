@@ -3,7 +3,7 @@
 int Connect_To_Server(int *sock,                 //ptr to socket
                       struct sockaddr_in *addr,  //filled struct
                       socklen_t *size,           //counted size
-                      int *number)               //ptr to number of client
+                      char *number)              //ptr to number of client
 {
     char cli_count_str[STR_LEN];
 

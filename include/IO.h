@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 //void Read_Keyboard (sf::Sprite *sprite,
-//					float time);
+//                    float time);
 
 
 #endif // !__IO_H__

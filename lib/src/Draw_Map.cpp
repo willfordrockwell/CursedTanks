@@ -6,9 +6,9 @@ int Draw_Map(sf::RenderWindow *window,
              char **micro_map,
              sf::Sprite map_sprite)
 {
-	for(int i = 0; i < SIZE_MICRO_MAP_Y; i++) {
+    for(int i = 0; i < SIZE_MICRO_MAP_Y; i++) {
         for(int j = 0; j < SIZE_MICRO_MAP_X; j++) {
-			map_sprite.setPosition(j * SIZE_TILE, i * SIZE_TILE);
+            map_sprite.setPosition(j * SIZE_TILE, i * SIZE_TILE);
             switch(micro_map[i][j])
             {
             case EMPTY:

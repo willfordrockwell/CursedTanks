@@ -10,21 +10,22 @@ void *Recv_From_Server(void *arg)
 
     const int size_buff = SIZE_MAP + SIZE_TANKS + SIZE_BULLETS;
 
-    char buff[size_buff];
-
     while(1) {
-        if (recvfrom(msg.socket, buff, size_buff, MSG_WAITALL,
+        if (recvfrom(msg.socket, (char *) msg.info, size_buff, MSG_WAITALL,
             (struct sockaddr *)&addr, &size) < 1) {
                 perror("Error recv message from server");
+                continue;
         }
         pthread_mutex_lock(&recv_msg);
-        memcpy(&(msg.info->map), buff, SIZE_MAP);
-        memcpy(&(msg.info->tanks), buff + SIZE_MAP, SIZE_TANKS);
-        memcpy(&(msg.info->bullets), buff + SIZE_MAP + SIZE_TANKS,
-               SIZE_BULLETS);
-		for(int i = 0; i < SIZE_MICRO_MAP_Y; i++) {
-			memcpy(msg.map[i], msg.info->map[i], SIZE_MICRO_MAP_X);
-		}
+        for (int i = 0; i < NUM_CLIENTS; i++) {
+            if (i == msg.cli_num)
+                continue;
+            msg.tanks[i].Set_Structure(msg.info->tanks[i]);
+            msg.bullets[i].Set_Structure(msg.info->bullets[i]);
+        }
+        for(int i = 0; i < SIZE_MICRO_MAP_Y; i++) {
+            memcpy(msg.map[i], msg.info->map[i], SIZE_MICRO_MAP_X);
+        }
         pthread_mutex_unlock(&recv_msg);
     }
 }

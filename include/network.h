@@ -20,13 +20,6 @@
 #define PORT_LENGTH 6
 #define IP_LENGTH 17
 
-#define SIZE_MAP SIZE_MICRO_MAP_X * SIZE_MICRO_MAP_Y
-#define SIZE_TANK sizeof(struct tank_s)
-#define SIZE_TANKS SIZE_TANK * NUM_CLIENTS 
-#define SIZE_BULLET sizeof(struct bullet_s)
-#define SIZE_BULLETS SIZE_BULLET * NUM_CLIENTS
-#define SIZE_CLI_NUM 1
-
 struct msg_to_thr_s {
     struct sockaddr_in serv_addr;
     struct sockaddr_in cli_addr[NUM_CLIENTS];
@@ -39,6 +32,9 @@ struct msg_to_recv_s {
     int socket;
 	char **map;
     struct info_to_player_s *info;
+    tank_c *tanks;
+    bullet_c *bullets;
+    char cli_num;
 };
 
 void Get_IP(char *auto_ip,                  //auto IP
@@ -51,10 +47,10 @@ int Init_Socket(int *sock,                  //ptr to socket
                 struct sockaddr_in *addr,   //ptr to addr
                 socklen_t *size);           //ptr to addr size
 
-int Connect_To_Server(int *sock,                //ptr to socket
-                      struct sockaddr_in *addr, //filled struct
-                      socklen_t *size,          //counted size
-                      int *number);             //ptr to number of client
+int Connect_To_Server(int *sock,                 //ptr to socket
+                      struct sockaddr_in *addr,  //filled struct
+                      socklen_t *size,           //counted size
+                      char *number);             //ptr to number of client
 
 void Connect_To_Client(int sock,                 //socket
                        struct sockaddr_in serv,  //sockaddr

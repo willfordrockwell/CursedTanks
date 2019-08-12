@@ -32,7 +32,8 @@ int Macro_To_Micro(sf::String *macro,
         for (int j = add_x; j < SIZE_MICRO_MAP_X - add_x; j++) {
             x = (j / SIZE_TILE) - add_x / SIZE_TILE;
             y = (i / SIZE_TILE) - add_y / SIZE_TILE;
-            switch (macro[y][x]) {
+            switch (macro[y][x])
+            {
             case '0':
                 micro[i][j] = EMPTY;
                 break;
@@ -79,7 +80,6 @@ int Macro_To_Micro(sf::String *macro,
                 break;
             default:
                 return -1;
-                break;
             }
         }
     return 0;
