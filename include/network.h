@@ -17,11 +17,11 @@
 
 #define STR_LEN 10
 
-#define PORT_LENGTH 6
+#define PORT_LENGTH 7
 #define IP_LENGTH 17
 
 struct msg_to_thr_s {
-    struct sockaddr_in serv_addr;
+    int socket;
     struct sockaddr_in cli_addr[NUM_CLIENTS];
     socklen_t cli_size[NUM_CLIENTS];
     int *cli_count;
@@ -30,7 +30,7 @@ struct msg_to_thr_s {
 
 struct msg_to_recv_s {
     int socket;
-	char **map;
+    char **map;
     struct info_to_player_s *info;
     tank_c *tanks;
     bullet_c *bullets;

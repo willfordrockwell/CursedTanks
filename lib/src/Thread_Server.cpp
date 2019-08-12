@@ -8,24 +8,29 @@ void *Thread_Server (void *arg)
     int sock;
     int ret;
     int cli_number;
+    char buff[STR_LEN];
     char cli_count_str[STR_LEN];
-
     struct info_to_server_s info_from_player;
-    struct sockaddr_in recv;
-    socklen_t recv_len = sizeof(recv);
 
     struct msg_to_thr_s msg;
     memcpy(&msg, arg, sizeof(msg));
 
-    ret = Init_Socket(&sock, &(msg.serv_addr), &recv_len);
-    if (ret == -1) {
-		pthread_mutex_unlock(&create_thread);
-        pthread_exit(0);
-    }
-    //telling to player its count number
+    //counting for player its count number
     cli_number = *(msg.cli_count);
     sprintf(cli_count_str, "%d", cli_number);
-    sendto(sock, cli_count_str, strlen(cli_count_str), MSG_CONFIRM, 
+
+    //beferizing new socket
+    sock = msg.socket;
+
+    //waiting new client
+    do {
+        recvfrom(sock, buff, STR_LEN, MSG_WAITALL,
+                 (struct sockaddr *)&msg.cli_addr[cli_number],
+                 &msg.cli_size[cli_number]);
+    } while (strcmp(buff, "Start") != 0);
+
+    //sending its number
+    sendto(sock, cli_count_str, strlen(cli_count_str), MSG_CONFIRM,
            (struct sockaddr *)&(msg.cli_addr[cli_number]),
            msg.cli_size[cli_number]);
 
@@ -36,7 +41,7 @@ void *Thread_Server (void *arg)
     pthread_mutex_unlock(&create_thread);
     //wait for all connecned players
     printf("player connected\n");
-    while(*(msg.cli_count) < NUM_CLIENTS)// printf("%d's Waiting...", cli_number);
+    while(*(msg.cli_count) < NUM_CLIENTS);
     //begin game
     //get info about all players
     memcpy(&msg, arg, sizeof(msg));

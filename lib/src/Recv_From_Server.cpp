@@ -11,7 +11,7 @@ void *Recv_From_Server(void *arg)
     const int size_buff = SIZE_MAP + SIZE_TANKS + SIZE_BULLETS;
 
     while(1) {
-        if (recvfrom(msg.socket, (char *) msg.info, size_buff, MSG_WAITALL,
+        if (recvfrom(msg.socket, (char *)msg.info, size_buff, MSG_WAITALL,
             (struct sockaddr *)&addr, &size) < 1) {
                 perror("Error recv message from server");
                 continue;
