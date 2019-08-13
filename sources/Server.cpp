@@ -66,7 +66,6 @@ int main(int argc, char const *argv[])
         Connect_To_Client(&sock, serv_addr, &cntd_clients, &msg);
     }
 
-    close(sock);
     while(live_clients > 1) {
         live_clients = NUM_CLIENTS;
         for (int i = 0; i < NUM_CLIENTS; i++) {

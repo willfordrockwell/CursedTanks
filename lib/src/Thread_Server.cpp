@@ -7,7 +7,6 @@ void *Thread_Server (void *arg)
 
     int ret;
     int cli_number;
-    char buff[STR_LEN];
     char cli_count_str[STR_LEN];
     struct info_to_server_s info_from_player;
 
@@ -20,13 +19,6 @@ void *Thread_Server (void *arg)
     //counting for player its count number
     cli_number = *(msg.cli_count);
     sprintf(cli_count_str, "%d", cli_number);
-
-    //waiting new client
-    do {
-        recvfrom(*(msg.socket), buff, STR_LEN, MSG_WAITALL,
-                 (struct sockaddr *)&msg.cli_addr[cli_number],
-                 &msg.cli_size[cli_number]);
-    } while (strcmp(buff, "Start") != 0);
 
     //sending its number
     sendto(*(msg.socket), cli_count_str, strlen(cli_count_str), MSG_CONFIRM,
@@ -62,7 +54,7 @@ void *Thread_Server (void *arg)
         Update_Info(msg.info, &info_from_player);
         //send to other players
         for(int i = 0; i < NUM_CLIENTS; i++) {
-            if (addr_in.sin_addr.s_addr == msg.cli_addr[i].sin_addr.s_addr)
+            if (memcmp(&addr_in, &(msg.cli_addr[i]), sizeof(addr_in)) == 0)
                 continue;
             Send_To_Player(*(msg.socket), msg.cli_addr[i], msg.cli_size[i],
                            msg.info);
