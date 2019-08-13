@@ -1,0 +1,16 @@
+dist: trusty
+sudo: required
+language: cpp
+os:
+  - linux
+install: sudo apt-get -y install libsfml-dev
+compiler:
+  - gcc
+script:
+  - make create assem_lib player server
+notifications:
+  email:
+    recipients:
+      - willfordworks@gmail.com
+    on_success: never
+    on_failure: always
