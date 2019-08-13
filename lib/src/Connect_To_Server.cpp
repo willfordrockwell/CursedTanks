@@ -23,20 +23,6 @@ int Connect_To_Server(int *sock,                 //ptr to socket
                     perror("Error recv connect to server");
                     return -1;
     }
-    //set new port for thread
-    addr->sin_port = atoi(buff);
-    bzero(buff, STR_LEN);
-    strcpy(buff, "Start");
-    if (sendto(*sock, buff, strlen(buff), MSG_CONFIRM, (struct sockaddr *)addr,
-               *size) == -1) {
-                perror("Error send connect to thread");
-                return -1;
-    }
-    if (recvfrom(*sock, buff, STR_LEN, MSG_WAITALL, (struct sockaddr *)addr,
-                 size) < 1) {
-                    perror("Error recv connect to thread");
-                    return -1;
-    }
     *number = atoi(buff);
     return 0;
 }

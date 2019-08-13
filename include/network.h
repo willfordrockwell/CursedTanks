@@ -21,7 +21,7 @@
 #define IP_LENGTH 17
 
 struct msg_to_thr_s {
-    int socket;
+    int *socket;
     struct sockaddr_in cli_addr[NUM_CLIENTS];
     socklen_t cli_size[NUM_CLIENTS];
     int *cli_count;
@@ -52,7 +52,7 @@ int Connect_To_Server(int *sock,                 //ptr to socket
                       socklen_t *size,           //counted size
                       char *number);             //ptr to number of client
 
-void Connect_To_Client(int sock,                 //socket
+void Connect_To_Client(int *sock,                //socket
                        struct sockaddr_in serv,  //sockaddr
                        int *count_client,        //count of connected clients
                        struct msg_to_thr_s *msg);//ptr to info about game
@@ -72,6 +72,8 @@ int Send_To_Server(int sock,                         //socket
 void *Recv_From_Server(void *arg);
 
 int Recv_From_Player(int sock,                       //socket
+                     struct sockaddr_in *addr,       //connected addr
+                     socklen_t *size,                //connected size
                      struct info_to_server_s *info); //ptr to info
 
 #endif // !__NETWORK_H__

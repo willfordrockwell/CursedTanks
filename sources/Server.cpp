@@ -63,7 +63,7 @@ int main(int argc, char const *argv[])
 
     //init players
     while(cntd_clients < NUM_CLIENTS) {
-        Connect_To_Client(sock, serv_addr, &cntd_clients, &msg);
+        Connect_To_Client(&sock, serv_addr, &cntd_clients, &msg);
     }
 
     close(sock);
