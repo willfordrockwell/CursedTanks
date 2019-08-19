@@ -1,13 +1,12 @@
-#include <cursedtanks.h>
+#include <logic.h>
 
 int Validate_Bullet(char **map,         //double-ptr to map
                     bullet_c *bullets,  //ptr to bullet
                     tank_c *tanks,      //ptr to tanks
-                    short num_arrays,   //all tanks
                     char number)        //number of clients
 {
     sf::Vector2i coord;
-    for (int i = 0; i < num_arrays; i++) {
+    for (int i = 0; i < NUM_CLIENTS; i++) {
         if (bullets[i].Is_Active()) {
             for (int j = 0; j < SIZE_TILE; j += SIZE_TILE - 1) {
                 switch (bullets[i].Get_Dir())
@@ -60,7 +59,7 @@ int Validate_Bullet(char **map,         //double-ptr to map
                             map[coord.y][coord.x] = EMPTY;
                             break;
                         case LEFT:
-                            case RIGHT:
+                        case RIGHT:
                             if (map[coord.y - 1][coord.x] == BRICK)
                                 map[coord.y - 1][coord.x] = EMPTY;
                             if (map[coord.y + 1][coord.x] == BRICK)

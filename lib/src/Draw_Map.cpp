@@ -1,6 +1,4 @@
-#include <SFML/Graphics.hpp>
-
-#include <cursedtanks.h>
+#include <IO.h>
 
 int Draw_Map(sf::RenderWindow *window,
              char **micro_map,

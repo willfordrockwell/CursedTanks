@@ -1,8 +1,7 @@
 #ifndef _CT_MAP_
 #define _CT_MAP_
 
-#include <SFML/Graphics.hpp>
-#include "logic.h"
+#include <logic.h>
 //! 0 - empty, 1 - 5 - bricks, 6 - tree, 7-B - metal, C - water, D - ice, E - base ?
 //! for ranged figure: +0 - full, +1 - up, +2 - down, +3 - left, +4 - rigth ?
 sf::String macro_tile[SIZE_MACRO_MAP_Y] = {

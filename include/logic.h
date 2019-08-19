@@ -2,7 +2,6 @@
 #define __LOGIC_H__
 
 #include <string.h>
-#include <IO.h>
 #include <SFML/Graphics.hpp>
 
 #define EMPTY   '0'
@@ -14,19 +13,17 @@
 #define BASE    '6'
 #define NONE    '7'
 
-#define MAP_SIDE 80
-
 #define SMALL_SQUARE 4
 
 #define SIZE_TILE 4
 #define SIZE_BASE_TILE 16
 
-#define SIZE_MICRO_TILE 	4
-#define SIZE_MICRO_MAP_X 	88
-#define SIZE_MICRO_MAP_Y 	88
-#define SIZE_MACRO_TILE 	16
-#define SIZE_MACRO_MAP_X 	20
-#define SIZE_MACRO_MAP_Y 	20
+#define SIZE_MICRO_TILE     4
+#define SIZE_MICRO_MAP_X    88
+#define SIZE_MICRO_MAP_Y    88
+#define SIZE_MACRO_TILE     16
+#define SIZE_MACRO_MAP_X    20
+#define SIZE_MACRO_MAP_Y    20
 
 #define SIZE_MAP SIZE_MICRO_MAP_X * SIZE_MICRO_MAP_Y
 #define SIZE_TANK sizeof(struct tank_s)
@@ -38,6 +35,8 @@
 #define NUM_CLIENTS 2
 
 enum direct_e { UP, LEFT, DOWN, RIGHT };
+
+enum moving_e { UP_BUTT, LEFT_BUTT, DOWN_BUTT, RIGHT_BUTT, SHOOT_BUTT, IDLE };
 
 struct coord_s {
     int x;
@@ -138,7 +137,7 @@ class tank_c : public object_c {
             active = 0;
         }
         tank_c(sf::String file,
-                  int x,
+               int x,
                int y,
                short color,
                enum direct_e dir) {
@@ -147,11 +146,12 @@ class tank_c : public object_c {
             texture.loadFromFile(file);
             sprite.setTexture(texture);
             place = color;
-            sprite.setTextureRect(sf::IntRect((color/2)*128+dir*32, (color%2)*128, 15, 15));
+            sprite.setTextureRect(sf::IntRect((color / 2) * 128 + dir * 32,
+                                  (color % 2) * 128, 15, 15));
             sprite.setPosition(x, y);
         }
         void Init(sf::String file,
-                  int x,
+               int x,
                int y,
                short color,
                enum direct_e dir) {
@@ -160,13 +160,15 @@ class tank_c : public object_c {
             texture.loadFromFile(file);
             sprite.setTexture(texture);
             place = color;
-            sprite.setTextureRect(sf::IntRect((color/2)*128+dir*32, (color%2)*128, 15, 15));
+            sprite.setTextureRect(sf::IntRect((color / 2) * 128 + dir * 32,
+                                  (color % 2) * 128, 15, 15));
             sprite.setPosition(x, y);
         }
 
         void Set_Dir(enum direct_e direct_) {
             direct = direct_;
-            sprite.setTextureRect(sf::IntRect(place/2*128+direct*32, (place%2)*128, 15, 15));
+            sprite.setTextureRect(sf::IntRect(place / 2 * 128 + direct * 32,
+                                  (place % 2) * 128, 15, 15));
         }
 
         short Get_Health() {
@@ -190,7 +192,8 @@ class tank_c : public object_c {
             sprite.setPosition(tank.coord.x, tank.coord.y);
             direct = tank.direct;
             health = tank.health; 
-            sprite.setTextureRect(sf::IntRect(place/2*128+direct*32, (place%2)*128, 15, 15));
+            sprite.setTextureRect(sf::IntRect(place / 2 * 128 + direct * 32,
+                                  (place % 2) * 128, 15, 15));
         }
 };
 
@@ -210,7 +213,7 @@ class bullet_c : public object_c {
             direct = dir;
             texture.loadFromFile(file);
             sprite.setTexture(texture);
-            sprite.setTextureRect(sf::IntRect(dir*8+322, 102, 4, 4));
+            sprite.setTextureRect(sf::IntRect(dir * 8 + 322, 102, 4, 4));
             sprite.setPosition(x, y);
         }
 
@@ -222,13 +225,13 @@ class bullet_c : public object_c {
             direct = dir;
             texture.loadFromFile(file);
             sprite.setTexture(texture);
-            sprite.setTextureRect(sf::IntRect(dir*8+322, 102, 4, 4));
+            sprite.setTextureRect(sf::IntRect(dir * 8 + 322, 102, 4, 4));
             sprite.setPosition(x, y);
         }
 
         void Set_Dir(enum direct_e direct_) {
             direct = direct_;
-            sprite.setTextureRect(sf::IntRect(direct*8+322, 102, 4, 4));
+            sprite.setTextureRect(sf::IntRect(direct * 8 + 322, 102, 4, 4));
         }
 
         bullet_s Get_Structure(bullet_s *bullet) {
@@ -248,20 +251,29 @@ class bullet_c : public object_c {
 
 };
 
-int Get_Map_From_Pix (short x);
+int Get_Map_From_Pix(short x);
 
-int Validate_Tank (char **map,           //double-ptr to map
-                   tank_c *tank);        //ptr to tank
+int Macro_To_Micro(sf::String *macro,
+                   char **micro);
+
+void Move_Tank(tank_c *tank,
+               enum moving_e move,
+               float time);
+
+int Validate_Tank(char **map,           //double-ptr to map
+                  tank_c *tank);        //ptr to tank
 
 int Validate_Bullet(char **map,         //double-ptr to map
                     bullet_c *bullets,  //ptr to bullet
                     tank_c *tanks,      //ptr to tanks
-                    short num_arrays,   //all tanks
                     char number);       //number of clients
 
-int Handling_Bullet (bullet_c *bullet,
-                      float time);
+int Handling_Bullet(bullet_c *bullet,
+                    float time);
 
-void Update_Info (struct info_to_player_s *server_info,  //ptr to server info
-                  struct info_to_server_s *player_info); //ptr to player info
+int Spawn_Bullet(tank_c tank,
+                 bullet_c *bullet);
+
+void Update_Info(struct info_to_player_s *server_info,  //ptr to server info
+                 struct info_to_server_s *player_info); //ptr to player info
 #endif // !__LOGIC_H__

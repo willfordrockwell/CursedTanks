@@ -1,6 +1,4 @@
 #include <server.h>
-#include <map.h>
-#include <map_func.h>
 
 pthread_mutex_t create_thread;
 pthread_mutex_t check_info;
@@ -21,26 +19,26 @@ int main(int argc, char const *argv[])
     struct info_to_player_s info;
     struct msg_to_thr_s msg;
 
-	char **tmp_map;
-	tmp_map =(char** ) malloc(sizeof(char*) * SIZE_MICRO_MAP_Y);
-	for (int i = 0; i < SIZE_MICRO_MAP_Y; i++) {
-		tmp_map[i] = (char* ) malloc(sizeof(char) * SIZE_MICRO_MAP_X);
-	}
+    char **tmp_map;
+    tmp_map = (char** ) malloc(sizeof(char*) * SIZE_MICRO_MAP_Y);
+    for (int i = 0; i < SIZE_MICRO_MAP_Y; i++) {
+        tmp_map[i] = (char* ) malloc(sizeof(char) * SIZE_MICRO_MAP_X);
+    }
     //fill into info map, tank, bullets
     Macro_To_Micro(macro_tile, tmp_map);
-	for(int i = 0; i < SIZE_MICRO_MAP_Y; i++) {
-		for(int j = 0; j < SIZE_MICRO_MAP_X; j++){
-			info.map[i][j] = tmp_map[i][j];
-		}
-	}
-	info.tanks[0].coord.x = 48;
-	info.tanks[0].coord.y = 16;
-	info.tanks[0].direct = UP;
-	info.tanks[0].health = 5;
-	info.tanks[1].coord.x = 80;
-	info.tanks[1].coord.y = 16;
-	info.tanks[1].direct = UP;
-	info.tanks[1].health = 5;
+    for(int i = 0; i < SIZE_MICRO_MAP_Y; i++) {
+        for(int j = 0; j < SIZE_MICRO_MAP_X; j++){
+            info.map[i][j] = tmp_map[i][j];
+        }
+    }
+    info.tanks[0].coord.x = 48;
+    info.tanks[0].coord.y = 16;
+    info.tanks[0].direct = UP;
+    info.tanks[0].health = 5;
+    info.tanks[1].coord.x = 80;
+    info.tanks[1].coord.y = 16;
+    info.tanks[1].direct = UP;
+    info.tanks[1].health = 5;
     msg.info = &info;
 
     pthread_mutex_init(&create_thread, NULL);

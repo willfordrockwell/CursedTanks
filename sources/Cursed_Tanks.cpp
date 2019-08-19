@@ -1,9 +1,4 @@
-#include <SFML/Graphics.hpp>
-#include <map.h>
 #include <cursedtanks.h>
-#include <iostream>
-#include <malloc.h>
-#include <server.h>
 
 #define SIZE_SERV sizeof(serv)
 
@@ -22,6 +17,8 @@ int main()
     char serv_port[PORT_LENGTH];
     struct sockaddr_in serv;
     socklen_t serv_len = SIZE_SERV;
+
+    enum moving_e move;
 
     int sock;
     char number;
@@ -65,15 +62,15 @@ int main()
     }
 // !INITIAL INET_________________________________________________
 
-
 // Initial window
     RenderWindow window(VideoMode(704, 704), "CursedTanks");
-    View view(FloatRect(0,0,352,352));
+    View view(FloatRect(0, 0, 352, 352));
+    //window.setKeyRepeatEnabled(false);
     window.setView(view);
 
 // Initial map sprite
     char **micro_tile = NULL;
-    micro_tile =(char** ) malloc(sizeof(char*) * SIZE_MICRO_MAP_Y);
+    micro_tile = (char** ) malloc(sizeof(char*) * SIZE_MICRO_MAP_Y);
     for (int i = 0; i < SIZE_MICRO_MAP_Y; i++) {
             micro_tile[i] = (char* ) malloc(sizeof(char) * SIZE_MICRO_MAP_X);
     }
@@ -81,7 +78,7 @@ int main()
     Texture map_texture;
     Sprite map_sprite;
     map_image.loadFromFile("textures/texture_map.png");
-    map_image.createMaskFromColor(Color(0,0,0,255), 0);
+    map_image.createMaskFromColor(Color(0, 0, 0, 255), 0);
     map_texture.loadFromImage(map_image);
     map_sprite.setTexture(map_texture);
     map_sprite.setTextureRect(sf::IntRect(336, 0, 4, 4));
@@ -113,28 +110,40 @@ int main()
     pthread_create(&tid, NULL, Recv_From_Server, &msg);
 // Game cycle
     while (window.isOpen()) {
+        move = IDLE;
         time = clock.getElapsedTime().asMicroseconds();
         clock.restart();
         time = time / 500;
         Event event;
         while (window.pollEvent(event)) {
-            if (event.type == Event::Closed){
+            switch (event.type)
+            {
+            case Event::Closed:
                 window.close();
-            }
-            if (event.type == Event::KeyPressed){
-                if (event.key.code == Keyboard::Space) {
-                    if (!bullets[(int)number].Is_Active()) {
-                        Spawn_Bullet(event, tanks[(int)number],
-                                     &bullets[(int)number]);
-                        bullets[(int)number].Set_Speed(0.075);
-                    }
-                }
+                break;
+            case Event::KeyPressed:
+                Read_Keyboard(event, &bullets[(int)number], &move, time);
+                break;
+            default:
+                break;
             }
         }
-        Read_Keyboard(&tanks[(int)number], time);
+        switch (move)
+        {
+        case SHOOT_BUTT:
+            Spawn_Bullet(tanks[(int)number], &bullets[(int)number]);
+            break;
+        case UP_BUTT:
+        case DOWN_BUTT:
+        case LEFT_BUTT:
+        case RIGHT_BUTT:
+            Move_Tank(&tanks[(int)number], move, time);
+        default:
+            break;
+        }
         Validate_Tank(micro_tile, &tanks[(int)number]);
         Handling_Bullet(&bullets[(int)number], time);
-        Validate_Bullet(micro_tile, bullets, tanks, NUM_CLIENTS, number);
+        Validate_Bullet(micro_tile, bullets, tanks, number);
 //Mutex_IN
         pthread_mutex_lock(&recv_msg);
 //fill map
@@ -165,7 +174,7 @@ int main()
 
     pthread_cancel(tid);
 // Free memory
-    for (int i =0; i < SIZE_MICRO_MAP_Y; i++) {
+    for (int i = 0; i < SIZE_MICRO_MAP_Y; i++) {
         free(micro_tile[i]);
     }
     free(micro_tile);

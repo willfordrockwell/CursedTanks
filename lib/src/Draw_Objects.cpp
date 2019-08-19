@@ -1,4 +1,4 @@
-#include <cursedtanks.h>
+#include <IO.h>
 
 int Draw_Objects (sf::RenderWindow *window,
                   tank_c *tanks,

@@ -1,53 +1,74 @@
-#include <cursedtanks.h>
+#include <IO.h>
 
-void Read_Keyboard(tank_c *tank,
+void Read_Keyboard(sf::Event event,
+                   bullet_c *bullet,
+                   enum moving_e *move,
                    float time)
 {
-    short x = 0, y = 0;
-
-    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::W))) {
-        y = -1;
-    }
-
-    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::S))) {
-        y = 1;
-    }
-
-    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::D))) {
-        x = -1;
-        y = 0;
-    }
-
-    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::D))) {
-        x = 1;
-        y = 0;
-    }
-
-    if (x == -1) {
-        if (tank -> Get_Dir() != LEFT) {
-            tank->sprite.setPosition(tank->sprite.getPosition().x, (int)((tank->sprite.getPosition().y + 2) / 4) * 4);
-            tank->Set_Dir(LEFT);
+    //if (event.type == sf::Event::KeyPressed) {
+        switch (event.key.code)
+        {
+        case sf::Keyboard::Space:
+            if (!bullet->Is_Active()) {
+                *move = SHOOT_BUTT;
+            }
+            break;
+        case sf::Keyboard::W:
+        case sf::Keyboard::Up:
+            *move = UP_BUTT;
+            break;
+        case sf::Keyboard::A:
+        case sf::Keyboard::Left:
+            *move = LEFT_BUTT;
+            break;
+        case sf::Keyboard::S:
+        case sf::Keyboard::Down:
+            *move = DOWN_BUTT;
+            break;
+        case sf::Keyboard::D:
+        case sf::Keyboard::Right:
+            *move = RIGHT_BUTT;
+            break;
+        default:
+            break;
         }
-    }
-    else if (x == 1) {
-        if (tank -> Get_Dir() != RIGHT) {
-            tank->sprite.setPosition(tank->sprite.getPosition().x, (int)((tank->sprite.getPosition().y + 2) / 4) * 4);
-            tank -> Set_Dir(RIGHT);
-        }
-    }
+    //}
 
-    else if (y == -1) {
-        if (tank -> Get_Dir() != UP) {
-            tank->sprite.setPosition(((int)(tank->sprite.getPosition().x + 2) / 4) * 4, tank->sprite.getPosition().y);
-            tank -> Set_Dir(UP);
-        }
-    }
-    else if (y == 1) {
-        if (tank -> Get_Dir() != DOWN) {
-            tank->sprite.setPosition(((int)(tank->sprite.getPosition().x + 2) / 4) * 4, tank->sprite.getPosition().y);
-            tank -> Set_Dir(DOWN);
-        }
-    }
+    //if (event.type == sf::Event::KeyReleased) {
+    //    switch (event.key.code)
+    //    {
+    //    case sf::Keyboard::W:
+    //    case sf::Keyboard::Up:
+    //        is_u_pressed = false;
+    //        break;
+    //    case sf::Keyboard::A:
+    //    case sf::Keyboard::Left:
+    //        is_l_pressed = false;
+    //        break;
+    //    case sf::Keyboard::S:
+    //    case sf::Keyboard::Down:
+    //        is_d_pressed = false;
+    //        break;
+    //    case sf::Keyboard::D:
+    //    case sf::Keyboard::Right:
+    //        is_r_pressed = false;
+    //        break;
+    //    default:
+    //        break;
+    //    }
+    //}
 
-    tank -> sprite.move(x * tank->Get_Speed() * time, y * tank->Get_Speed() * time);
+    //if (is_l_pressed) {
+    //    
+    //}
+    //if (is_r_pressed) {
+    //    
+    //}
+    //if (is_u_pressed) {
+    //    
+    //}
+    //if (is_d_pressed) {
+    //    
+    //}
+    return;
 }
